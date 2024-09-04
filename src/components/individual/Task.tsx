@@ -1,8 +1,6 @@
-// src/components/TaskType.tsx
-import { Paper, Text, Badge, Group, ActionIcon, Tooltip, TextInput } from '@mantine/core';
-
-import { TaskType } from '../../types/TaskType';
-import { useState } from 'react';
+import {Card, Text, Grid, Badge, Button, Group } from '@mantine/core';
+import { TaskType } from '../../types/TaskType.ts';
+import { IconEdit, IconTrash } from '@tabler/icons-react';
 
 interface TaskProps {
     task: TaskType;
@@ -11,73 +9,68 @@ interface TaskProps {
 }
 
 function Task({ task, onEdit, onDelete }: TaskProps) {
-    const [isEditing, setIsEditing] = useState(false);
-    const [editedTask, setEditedTask] = useState<TaskType>(task);
 
-    const handleSave = () => {
-        onEdit(editedTask);
-        setIsEditing(false);
-    };
 
     return (
-        <Paper  shadow="xs" radius="md" style={{ marginBottom: '1rem' }}>
-            {isEditing ? (
-                <div>
-                    <TextInput
-                        label="TaskType Name"
-                        value={editedTask.name}
-                        onChange={(e) => setEditedTask({ ...editedTask, name: e.target.value })}
-                    />
-                    <TextInput
-                        label="Description"
-                        value={editedTask.description || ''}
-                        onChange={(e) => setEditedTask({ ...editedTask, description: e.target.value })}
-                        style={{ marginTop: '0.5rem' }}
-                    />
-                    <Group style={{ marginTop: '0.5rem' }}>
-                        <ActionIcon color="green" onClick={handleSave}>
-                            Save
-                        </ActionIcon>
-                        <ActionIcon color="red" onClick={() => setIsEditing(false)}>
-                            Cancel
-                        </ActionIcon>
-                    </Group>
-                </div>
-            ) : (
-                <div>
-                    <Group >
-                        <Text >{task.name}</Text>
-                        <Group >
-                            <Tooltip label="Edit task">
-                                <ActionIcon onClick={() => setIsEditing(true)}>
-
-                                </ActionIcon>
-                            </Tooltip>
-                            <Tooltip label="Delete task">
-                                <ActionIcon onClick={() => onDelete(task.id)}>
-
-                                </ActionIcon>
-                            </Tooltip>
-                        </Group>
-                    </Group>
-                    <Text size="sm" color="dimmed" style={{ marginTop: '0.5rem' }}>
-                        {task.date}
+        <Card
+            shadow="sm"
+            padding="lg"
+            radius="md"
+            style={{
+                borderRadius: '15px',
+                padding: '20px',
+                border: '1px solid #e0e0e0',
+            }}
+        >
+            <Grid align="center" mb="xs">
+                {/* Task Name */}
+                <Grid.Col span={8}>
+                    <Text size="md" >
+                        {task.name}
                     </Text>
-                    {task.description && (
-                        <Text size="sm" style={{ marginTop: '0.5rem' }}>
-                            {task.description}
-                        </Text>
-                    )}
-                    <Group style={{ marginTop: '0.5rem' }}>
+                </Grid.Col>
+
+                {/* Edit/Delete Buttons */}
+                <Grid.Col span={4} style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Group >
+                        <Button size="xs" variant="subtle" color="blue" onClick={() => onEdit(task)}>
+                            <IconEdit size={16} />
+                        </Button>
+                        <Button size="xs" variant="subtle" color="red" onClick={() => onDelete(task.id)}>
+                            <IconTrash size={16} />
+                        </Button>
+                    </Group>
+                </Grid.Col>
+            </Grid>
+
+            {/* Task Description */}
+            <Text size="sm" color="dimmed" mb="md" style={{ lineHeight: '1.4' }}>
+                {task.description || 'No description provided'}
+            </Text>
+
+            <Grid align="center">
+                {/* Category and Tags */}
+                <Grid.Col span={8}>
+                    <Group >
+                        <Badge color="blue" variant="light" style={{ textTransform: 'capitalize' }}>
+                            {task.category}
+                        </Badge>
                         {task.tags.map((tag, index) => (
-                            <Badge key={index} variant="outline">
+                            <Badge key={index} color="teal" variant="light">
                                 {tag}
                             </Badge>
                         ))}
                     </Group>
-                </div>
-            )}
-        </Paper>
+                </Grid.Col>
+
+                {/* Task Date */}
+                <Grid.Col span={4} style={{ textAlign: 'right' }}>
+                    <Text size="xs" color="dimmed">
+                        {new Date(task.date).toLocaleDateString()}
+                    </Text>
+                </Grid.Col>
+            </Grid>
+        </Card>
     );
 }
 
