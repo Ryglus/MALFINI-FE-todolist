@@ -1,5 +1,5 @@
 import ThemeToggle from "../components/individual/ThemeToggle.tsx";
-import {Container, Grid, useMantineTheme} from '@mantine/core';
+import {Button, ButtonGroup, Container, Grid, SimpleGrid, useMantineTheme} from '@mantine/core';
 import AccountSection from "../components/ui/AccountSection.tsx";
 import TaskSection from "../components/ui/TaskSection.tsx";
 
@@ -19,9 +19,16 @@ function HomePage() {
                     <Grid.Col style={{ background: theme.colors.blue[5] }}  span={{ base: 12, sm: 3}}>
                         <AccountSection />
                     </Grid.Col>
-                    <Grid.Col span={{ base: 12, sm: 9 }}  style={{ borderRadius: '0 5px 5px 0' }}>
-                        <ThemeToggle />
-                        <TaskSection />
+                    <Grid.Col  span={{ base: 12, sm: 9 }}  style={{ borderRadius: '0 5px 5px 0' }}>
+                        <SimpleGrid>
+                            <ButtonGroup>
+                                <ThemeToggle />
+                                <Button>Add new</Button>
+                            </ButtonGroup>
+                            <TaskSection />
+                        </SimpleGrid>
+
+
                     </Grid.Col>
                 </Grid>
             </Container>
