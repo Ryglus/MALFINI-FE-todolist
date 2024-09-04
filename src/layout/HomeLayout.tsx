@@ -1,12 +1,15 @@
 
 import { Outlet } from 'react-router-dom';
+import {Container} from "@mantine/core";
 
 
 const HomeLayout = () => {
 
     return (
         <>
-            <Outlet />
+            <Container>
+                <Outlet />
+            </Container>
         </>
     );
 };
