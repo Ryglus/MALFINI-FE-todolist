@@ -1,16 +1,16 @@
-import { Divider, Paper, Text, Group, TextInput, Avatar, Stack } from '@mantine/core';
+import { Divider, Text, Group, TextInput, Avatar, Stack } from '@mantine/core';
+import { Link } from 'react-router-dom';
 
 function AccountSection() {
-
     return (
-        <Paper
+        <div
             style={{
                 height: '100%',
-                borderRadius: '20px',
                 padding: '20px',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
+                minHeight:'102vh'
             }}
         >
             <Stack>
@@ -22,7 +22,9 @@ function AccountSection() {
                 <Divider my="sm" color="#EDEDED" />
 
                 <Stack>
-                    <Text size="sm" color="dimmed">Today tasks</Text>
+                    <Link to="/">
+                        <Text size="sm" color="dimmed">Today tasks</Text>
+                    </Link>
                     <Stack>
                         <Text size="sm" color="#FF7A00">&bull; Personal</Text>
                         <Text size="sm" color="#6A5ACD">&bull; Freelance</Text>
@@ -34,11 +36,15 @@ function AccountSection() {
                 <Divider my="sm" color="#EDEDED" />
 
                 <Stack>
-                    <Text size="sm" color="dimmed">Scheduled tasks</Text>
-                    <Text size="sm" color="dimmed">Settings</Text>
+                    <Link to="/">
+                        <Text size="sm" color="dimmed">Scheduled tasks</Text>
+                    </Link>
+                    <Link to="/settings">
+                        <Text size="sm" color="dimmed">Settings</Text>
+                    </Link>
                 </Stack>
             </Stack>
-        </Paper>
+        </div>
     );
 }
 
