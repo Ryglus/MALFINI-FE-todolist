@@ -1,7 +1,6 @@
-import {Divider, Paper, Text, Group, TextInput, Avatar, Stack, useMantineTheme} from '@mantine/core';
+import { Divider, Paper, Text, Group, TextInput, Avatar, Stack } from '@mantine/core';
 
 function AccountSection() {
-    const theme = useMantineTheme();
 
     return (
         <Paper
@@ -12,18 +11,17 @@ function AccountSection() {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                background: theme.colors.blue[5]
             }}
         >
-            <Stack >
+            <Stack>
                 <Group>
                     <Avatar size="lg" radius="xl" />
-                    <Text size="md" >Account Name</Text>
+                    <Text size="md">Account Name</Text>
                 </Group>
 
                 <Divider my="sm" color="#EDEDED" />
 
-                <Stack >
+                <Stack>
                     <Text size="sm" color="dimmed">Today tasks</Text>
                     <Stack>
                         <Text size="sm" color="#FF7A00">&bull; Personal</Text>
@@ -35,7 +33,7 @@ function AccountSection() {
 
                 <Divider my="sm" color="#EDEDED" />
 
-                <Stack >
+                <Stack>
                     <Text size="sm" color="dimmed">Scheduled tasks</Text>
                     <Text size="sm" color="dimmed">Settings</Text>
                 </Stack>
