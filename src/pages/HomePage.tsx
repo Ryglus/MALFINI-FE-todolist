@@ -1,5 +1,5 @@
 import TaskSection from '../components/ui/TaskSection.tsx';
-import { ScrollArea, useMantineTheme } from '@mantine/core';
+import {Card, ScrollArea, useMantineTheme} from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import CreateTaskSection from "../components/ui/CreateTaskSection.tsx";
 import { TaskType } from "../types/TaskType.ts";
@@ -23,7 +23,10 @@ const HomePage = () => {
 
     return (
         <>
-            <CreateTaskSection onCreate={handleCreateTask} />
+            <Card style={{margin:'20px 15px 0px 0px'}}>
+                <CreateTaskSection onCreate={handleCreateTask} />
+            </Card>
+
             <ScrollArea
                 scrollHideDelay={500}
                 style={{

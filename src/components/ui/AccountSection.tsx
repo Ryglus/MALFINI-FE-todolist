@@ -1,7 +1,11 @@
 import { Divider, Text, Group, TextInput, Avatar, Stack } from '@mantine/core';
 import { Link } from 'react-router-dom';
+import DatePicker from "../comprised/DatePicker.tsx";
+import {useState} from "react";
 
 function AccountSection() {
+    const [selectedDate, setSelectedDate] = useState(new Date());
+
     return (
         <div
             style={{
@@ -18,7 +22,7 @@ function AccountSection() {
                     <Avatar size="lg" radius="xl" />
                     <Text size="md">Account Name</Text>
                 </Group>
-
+                <DatePicker selectedDate={selectedDate} onDateChange={setSelectedDate} />
                 <Divider my="sm" color="#EDEDED" />
 
                 <Stack>

@@ -58,7 +58,7 @@ const HomeLayout = ({title}: HomeLayoutProps) => {
                         <AccountSection/>
                     </Grid.Col>
 
-                    <Grid.Col span={{base: 12, sm: 9}}>
+                    <Grid.Col span={{base: 12, sm: 9}} style={{padding:'0 6px 0 0'}}>
                         <Outlet/>
                     </Grid.Col>
                 </Grid>

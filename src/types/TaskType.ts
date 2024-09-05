@@ -1,4 +1,3 @@
-
 export interface TaskType {
     id: string;
     subTasks?: this[];

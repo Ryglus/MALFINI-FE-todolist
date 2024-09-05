@@ -1,6 +1,4 @@
 import { TaskType } from '../types/TaskType.ts';
-
-// Key to use in local storage
 const LOCAL_STORAGE_KEY = 'tasks';
 
 export const loadTasks = (): TaskType[] => {
