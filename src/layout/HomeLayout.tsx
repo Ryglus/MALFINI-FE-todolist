@@ -8,15 +8,18 @@ import {
     useMantineTheme
 } from "@mantine/core";
 import AccountSection from "../components/ui/AccountSection.tsx";
-import { IconPlus } from "@tabler/icons-react";
-import { useState } from "react";
-import { Outlet } from "react-router-dom";
-import { useMediaQuery } from '@mantine/hooks';
+import {IconPlus} from "@tabler/icons-react";
+import {useState} from "react";
+import {Outlet} from "react-router-dom";
+import {useMediaQuery} from '@mantine/hooks';
 
-const HomeLayout = () => {
+interface HomeLayoutProps {
+    title?: string
+}
+
+const HomeLayout = ({title}: HomeLayoutProps) => {
     const theme = useMantineTheme();
     const [opened, setOpened] = useState(false);  // State for Drawer visibility
-    const title = opened ? 'Close navigation' : 'Open navigation';
     const isSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.md}px)`);
 
     return (
@@ -27,9 +30,9 @@ const HomeLayout = () => {
                 padding="md"
                 size="sm"
                 withCloseButton={true}
-                title={"Title"}
+                title={title}
             >
-                <AccountSection />
+                <AccountSection/>
             </Drawer>
 
             {/* Layout for larger screens */}
@@ -45,18 +48,18 @@ const HomeLayout = () => {
                 mt={"xl"}
                 className="mantine-visible-from-md"
             >
-                <Grid >
+                <Grid>
                     <Grid.Col
-                        span={{ base: 3, md: 3 }}
+                        span={{base: 3, md: 3}}
                         style={{
                             backgroundColor: theme.colors.blue[5],
                         }}
                     >
-                        <AccountSection />
+                        <AccountSection/>
                     </Grid.Col>
 
-                    <Grid.Col span={{ base: 12, sm: 9 }}>
-                        <Outlet />
+                    <Grid.Col span={{base: 12, sm: 9}}>
+                        <Outlet/>
                     </Grid.Col>
                 </Grid>
             </Container>
@@ -83,13 +86,11 @@ const HomeLayout = () => {
                     <Burger
                         opened={opened}
                         onClick={() => setOpened((prev) => !prev)}
-                        title={title}
                         size="sm"
-                        hiddenFrom="md"
                     />
-                    <Title order={1} ml={"md"}>Title</Title>
-                    <ButtonGroup style={{ justifyContent: 'flex-end', width: '100%' }}>
-                        <Button leftSection={<IconPlus />}> New</Button>
+                    <Title order={1} ml={"md"}>{title}</Title>
+                    <ButtonGroup  style={{justifyContent: 'flex-end', width: '100%'}}>
+                        <Button leftSection={<IconPlus/>}> New</Button>
                     </ButtonGroup>
                 </div>
 
@@ -102,7 +103,7 @@ const HomeLayout = () => {
                         zIndex: -1
                     }}
                 />
-                <Outlet />
+                <Outlet/>
             </Container>
         </div>
     );

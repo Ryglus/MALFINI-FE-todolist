@@ -4,18 +4,9 @@ import { TaskType } from '../../types/TaskType.ts';
 import Task from '../comprised/Task.tsx';
 
 const sampleTasks: TaskType[] = [
-    { id: '1', category: 'Work', tags: ['urgent'], date: '2024-09-01', name: 'Complete project', description: 'Finish the final report.' },
-    { id: '2', category: 'Personal', tags: ['shopping','asd'], date: '2024-09-02', name: 'Buy groceries' },
-    { id: '3', category: 'Personal', tags: ['shopping','asd'], date: '2024-09-02', name: 'Buy groceries' },
-    { id: '4', category: 'Personal', tags: ['shopping','asd'], date: '2024-09-02', name: 'Buy groceries' },
-    { id: '5', category: 'Personal', tags: ['shopping','asd'], date: '2024-09-02', name: 'Buy groceries' },
-    { id: '6', category: 'Personal', tags: ['shopping','asd'], date: '2024-09-02', name: 'Buy groceries' },
-    { id: '7', category: 'Personal', tags: ['shopping','asd'], date: '2024-09-02', name: 'Buy groceries' },
-    { id: '8', category: 'Personal', tags: ['shopping','asd'], date: '2024-09-02', name: 'Buy groceries' },
-    { id: '9', category: 'Personal', tags: ['shopping','asd'], date: '2024-09-02', name: 'Buy groceries' },
-    { id: '10', category: 'Personal', tags: ['shopping','asd'], date: '2024-09-02', name: 'Buy groceries' },
-    { id: '11', category: 'Personal', tags: ['shopping','asd'], date: '2024-09-02', name: 'Buy groceries' },
-    { id: '12', category: 'Personal', tags: ['shopping','asd'], date: '2024-09-02', name: 'Buy groceries' },
+    { id: '1', tags: ['urgent'], date: '2024-09-01', name: 'Complete project', description: 'Finish the final report.' },
+    { id: '2', subTasks: [{ id: '3', tags: ['urgent'], date: '2024-09-01', name: 'Complete project', description: 'Finish the final report.' }], tags: ['shopping','asd'], date: '2024-09-02', name: 'Go read a book you fat faggot, oh ye, little faggie' },
+
     // Add more tasks as needed
 ];
 

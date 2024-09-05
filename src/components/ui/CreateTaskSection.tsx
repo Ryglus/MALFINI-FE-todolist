@@ -22,7 +22,6 @@ const CreateTaskSection = ({ onCreate }: CreateTaskSectionProps) => {
             id: Date.now().toString(),
             name: taskName,
             date,
-            category,
             tags,
         };
 

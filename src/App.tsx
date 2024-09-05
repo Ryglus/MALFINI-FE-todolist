@@ -12,10 +12,15 @@ function App() {
 
                 <Router>
                         <Routes>
-                            <Route path="/" element={<HomeLayout/>}>
+                            <Route path="/" element={<HomeLayout title="Home"/>}>
                                 <Route index element={<HomePage/>}/>
-                                <Route path="/settings" element={<SettingsPage/>}/>
+
                             </Route>
+                            <Route path="/settings" element={<HomeLayout title="Settings"/>}>
+                                <Route index element={<SettingsPage />}/>
+
+                            </Route>
+
                             <Route path="*" element={<NoPage />} />
                         </Routes>
                 </Router>

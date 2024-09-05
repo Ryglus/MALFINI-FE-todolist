@@ -1,6 +1,7 @@
-import {Card, Text, Grid, Badge, Button, Group } from '@mantine/core';
+import {Card, Text, Group, Tooltip, ActionIcon, Collapse} from '@mantine/core';
 import { TaskType } from '../../types/TaskType.ts';
-import { IconEdit, IconTrash } from '@tabler/icons-react';
+import {IconEdit, IconTrash, IconChevronDown, IconChevronUp, IconSquareCheck} from '@tabler/icons-react';
+import { useState } from 'react';
 
 interface TaskProps {
     task: TaskType;
@@ -9,55 +10,137 @@ interface TaskProps {
 }
 
 function Task({ task, onEdit, onDelete }: TaskProps) {
+    const [collapsed, setCollapsed] = useState(true);
+    // @ts-ignore
+    let [checked, setChecked] = useState(false); // State to track if the task is completed
 
+    // Generate color for each tag dot (you can customize this logic)
+    const getTagColor = (tag: string) => {
+        const colors = ['#FF7A00', '#6A5ACD', '#FF4500', '#4CAF50', '#FFC107','#FAC1da']; // Add more colors as needed
+        return colors[tag.length % colors.length]; // Basic color assignment based on tag length
+    };
 
     return (
-        <Card
-            shadow="sm"
-            padding="lg"
-            radius="md"
-            style={{
-                borderRadius: '15px',
-                padding: '20px',
-                border: '1px solid #e0e0e0',
-                marginBottom: '15px',
-            }}
-        >
-            <Grid align="center" mb="xs">
-                <Group >
-                    <Badge color="blue" variant="light" style={{ textTransform: 'capitalize' }}>
-                        {task.category}
-                    </Badge>
+        <div style={{marginBlock:'5px'}}>
+            <Card shadow="sm" padding="lg" style={{position: 'relative'}}>
+                <div
+                    style={{
+                        position: 'absolute',
+                        left: 0,
+                        top: 0,
+                        bottom: 0, // This ensures the div fills the full height of the card
+                        flexDirection: 'column',
+                        justifyContent: 'space-between', // Distribute tags evenly along the full height
+                        width: '10px',
+                        padding: '0', // Padding to create space between tags and the top/bottom of the card
+                    }}
+                >
                     {task.tags.map((tag, index) => (
-                        <Badge key={index} color="teal" variant="light">
-                            {tag}
-                        </Badge>
+                        <Tooltip key={index} label={tag}>
+                            <div
+                                style={{
+                                    backgroundColor: getTagColor(tag),
+                                    width: '100%',
+                                    height: `${100 / task.tags.length}%`, // Make the tag height proportional to the number of tags
+                                    minHeight: '10px', // Ensures that tags don't get too small
+                                    border: 'none',
+                                }}
+                            />
+                        </Tooltip>
                     ))}
-                </Group>
-                {/* Task Name */}
-                <Grid.Col span={8}>
-                    <Text size="md" >
-                        {task.name}
-                    </Text>
-                </Grid.Col>
+                </div>
+                <div
+                    style={{
+                        position: 'absolute',
+                        left: 0,
+                        top: 0,
+                        bottom: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: '50px', // Adjust width as needed
+                    }}
+                >
+                    <ActionIcon
+                        size="md"
+                        variant="subtle"
+                        color="blue"
+                        onClick={() => onEdit(task)}
+                        style={{height: '100%'}} // Ensures the ActionIcon takes up full height
+                    >
+                        <IconEdit size={16}/>
+                    </ActionIcon>
+                </div>
+                <div style={{paddingLeft: '25px'}}>
 
-                {/* Edit/Delete Buttons */}
-                <Grid.Col span={4} style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <h3>{task.name}</h3>
+                    <p>{task.description}</p>
+                </div>
 
-                    <Group >
-                        <Text size="xs" color="dimmed">
-                            {new Date(task.date).toLocaleDateString()}
-                        </Text>
-                        <Button size="xs" variant="subtle" color="blue" onClick={() => onEdit(task)}>
-                            <IconEdit size={16} />
-                        </Button>
-                        <Button size="xs" variant="subtle" color="red" onClick={() => onDelete(task.id)}>
-                            <IconTrash size={16} />
-                        </Button>
+                {/* Buttons on the right */}
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                    }}
+                >
+
+                    <ActionIcon
+                        style={{
+                            flex: 1,
+                            borderRadius: 0,
+                            borderBottom: '1px solid #ddd',
+                        }}
+                        onClick={() => setChecked(prevChecked => !prevChecked)}
+                    >
+                        <IconSquareCheck size={16}/>
+                    </ActionIcon>
+                    <ActionIcon
+                        style={{
+                            flex: 1,
+                            borderRadius: 0,
+
+                        }}
+                        onClick={() => onDelete(task.id)}
+                    >
+                        <IconTrash size={16}/>
+                    </ActionIcon>
+                    {task.subTasks && (
+                        <ActionIcon
+                            onClick={() => setCollapsed(!collapsed)}
+                            style={{
+                                flex: '1',
+                                borderRadius: 0,
+                                borderTop: '1px solid #ddd',
+                            }} // 33% if subtasks are present
+                        >
+                            {collapsed ? <IconChevronDown size={16}/> : <IconChevronUp size={16}/>}
+                        </ActionIcon>
+                    )}
+                </div>
+
+            </Card>
+            {/* Collapsible Subtasks */}
+            {task.subTasks && (
+
+                <Collapse in={!collapsed}>
+                    <Group style={{paddingLeft: '20px'}}>
+                        {task.subTasks.map((subTask, index) => (
+                            <Card>
+                                <Text key={index} size="sm" color="dimmed">
+                                    {subTask.name}
+                                </Text>
+                            </Card>
+                        ))}
                     </Group>
-                </Grid.Col>
-            </Grid>
-        </Card>
+                </Collapse>
+
+            )}
+        </div>
     );
 }
 

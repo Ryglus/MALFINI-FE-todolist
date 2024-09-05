@@ -1,6 +1,7 @@
+
 export interface TaskType {
     id: string;
-    category: string;
+    subTasks?: this[];
     tags: string[];
     date: string; // ISO date string or a format suitable for your date picker
     description?: string;
