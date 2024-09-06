@@ -16,6 +16,10 @@ function App() {
                                 <Route index element={<HomePage/>}/>
 
                             </Route>
+                            <Route path="/tasks" element={<HomeLayout title="Scheduled Tasks"/>}>
+                                <Route index element={<HomePage/>}/>
+
+                            </Route>
                             <Route path="/settings" element={<HomeLayout title="Settings"/>}>
                                 <Route index element={<SettingsPage />}/>
 

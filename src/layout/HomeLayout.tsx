@@ -13,11 +13,7 @@ import {useState} from "react";
 import {Outlet} from "react-router-dom";
 import {useMediaQuery} from '@mantine/hooks';
 
-interface HomeLayoutProps {
-    title?: string
-}
-
-const HomeLayout = ({title}: HomeLayoutProps) => {
+const HomeLayout = ({ title }: { title?: string }) => {
     const theme = useMantineTheme();
     const [opened, setOpened] = useState(false);
     const isSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.md}px)`);
@@ -32,7 +28,7 @@ const HomeLayout = ({title}: HomeLayoutProps) => {
                 withCloseButton={true}
                 title={title}
             >
-                <AccountSection/>
+                <AccountSection />
             </Drawer>
 
             {/* Layout for larger screens */}

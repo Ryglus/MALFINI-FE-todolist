@@ -1,42 +1,80 @@
-import React from 'react';
-import { Text, Group, useMantineTheme, Button} from '@mantine/core';
-import { format, addDays, subDays } from 'date-fns';
+import React, { useEffect, useState } from 'react';
+import { Text, Group, useMantineTheme, Button } from '@mantine/core';
+import { addDays, subDays } from 'date-fns';
 
 interface DatePickerProps {
-    selectedDate: Date;
-    onDateChange: (date: Date) => void;
+    currentDate: Date | null;
+    onDateChange: (date: Date | null) => void;
 }
 
-const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChange }) => {
+const DatePicker: React.FC<DatePickerProps> = ({ currentDate, onDateChange }) => {
     const theme = useMantineTheme();
     const { colors } = theme;
+    const [startDate, setStartDate] = useState<Date>(subDays(new Date(), 2)); // Start range fixed around today initially
 
-    const startDate = subDays(selectedDate, 2);
+    useEffect(() => {
+        if (currentDate) {
+            setStartDate(subDays(currentDate, 2));
+        } else {
+            setStartDate(subDays(new Date(), 2)); // Default to today if no currentDate
+        }
+    }, [currentDate]);
+
     const dates = Array.from({ length: 5 }, (_, i) => addDays(startDate, i));
 
+    const handleDateChange = (date: Date | null) => {
+        onDateChange(date);
+    };
+
     return (
-        <div style={{margin:'0 auto'}}>
-            <Group style={{ overflowY: "hidden", display: 'flex', gap:'1px' }}>
+        <div style={{ margin: '0 auto', width: '100%' }}>
+            <Group
+                style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    gap: '1px',
+                    marginBottom: '10px', // Adds space between the date buttons and "All tasks" button
+                }}
+            >
                 {dates.map((date) => {
-                    const isSelected = date.toDateString() === selectedDate.toDateString();
+                    const isSelected = currentDate && date.toDateString() === currentDate.toDateString();
                     return (
                         <Button
+                            variant="light"
+                            color="dimmed"
                             key={date.toDateString()}
                             style={{
-                                padding:'8px',
-                                color: isSelected ? colors.gray[0] : colors.dark[7],
+                                flexGrow: 1,
+                                padding: '8px',
+                                color: isSelected ? colors.gray[0] : colors.dark[6],
                                 cursor: 'pointer',
                                 transition: 'background-color 0.3s ease',
+                                textAlign: 'center',
                             }}
-                            onClick={() => onDateChange(date)}
+                            onClick={() => handleDateChange(date)}
                         >
-                            <Text>
-                                {format(date, 'dd')}
-                            </Text>
+                            <Text>{date.getDate()}</Text>
                         </Button>
                     );
                 })}
             </Group>
+
+            {/* All Tasks Button */}
+            <Button
+                variant="light"
+                color="dimmed"
+                fullWidth
+                style={{
+                    padding: '8px',
+                    color: !currentDate ? colors.gray[0] : colors.dark[7],
+                    cursor: 'pointer',
+                    transition: 'background-color 0.3s ease',
+                    textAlign: 'center',
+                }}
+                onClick={() => handleDateChange(null)}
+            >
+                All tasks
+            </Button>
         </div>
     );
 };

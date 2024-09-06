@@ -1,21 +1,31 @@
-import {Divider, Text, Group, Avatar, Stack, Button, useMantineTheme} from '@mantine/core';
-import { Link } from 'react-router-dom';
-import DatePicker from "../comprised/DatePicker.tsx";
-import {useState} from "react";
-import TaskChart from "../comprised/TaskChart.tsx";
+import React, {  useState } from 'react';
+import {Link,  useNavigate} from 'react-router-dom';
+import { Divider, Text, Group, Avatar, Stack, Button, useMantineTheme } from '@mantine/core';
+import DatePicker from "../comprised/DatePicker";
+import TaskChart from "../comprised/TaskChart";
+import {toLocalISODateString} from "../../utils/TimeBeTiming.ts";
 
-function AccountSection() {
-    const [selectedDate, setSelectedDate] = useState(new Date());
+const AccountSection: React.FC = () => {
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const theme = useMantineTheme();
+    const navigate = useNavigate();
+
+    const handleDateChange = (date: Date | null) => {
+        setSelectedDate(date);
+
+        const localISODate = toLocalISODateString(date);
+        navigate(localISODate ? `/?date=${localISODate}` : `/`);
+    };
+
     return (
         <div
             style={{
                 height: '100%',
-                padding: '20px',
+                padding: '15px',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                minHeight:'102vh'
+                minHeight: '102vh'
             }}
         >
             <Stack>
@@ -24,34 +34,25 @@ function AccountSection() {
                     <Text size="md">Account Name</Text>
                 </Group>
 
-                <Divider/>
+                <Divider />
 
                 <TaskChart />
-                <Divider/>
+                <Divider />
 
-                <DatePicker selectedDate={selectedDate} onDateChange={setSelectedDate} />
-
-                <Divider/>
-
+                <DatePicker
+                    currentDate={selectedDate}
+                    onDateChange={handleDateChange}
+                />
+                <Divider />
                 <div
                     style={{
-
                         display: 'flex',
                         flexDirection: 'column',
                     }}
                 >
                     <Stack>
-                        <Link to="/">
-                            <Button
-                                size="sm"
-                                variant="light"
-                                color="dimmed"
-                                fullWidth
-                            >
-                                Today tasks
-                            </Button>
-                        </Link>
-                        <Stack >
+                        <Text>tags</Text>
+                        <Stack>
                             <Text size="sm" c={theme.colors.orange[6]}>
                                 &bull; Personal
                             </Text>
@@ -66,35 +67,14 @@ function AccountSection() {
 
                     <Divider my="sm" />
 
-                    <Stack  mt="md">
-                        <Link to="/">
-                            <Button
-                                size="sm"
-                                variant="light"
-                                color="dimmed"
-                                fullWidth
-                            >
-                                Scheduled tasks
-                            </Button>
-                        </Link>
+                    <Stack mt="md">
                         <Link to="/settings">
-                            <Button
-                                size="sm"
-                                variant="light"
-                                color="dimmed"
-                                fullWidth
-                            >
+                            <Button size="sm" variant="light" color="dimmed" fullWidth>
                                 Settings
                             </Button>
                         </Link>
-                        <Divider my="sm" />
                         <Link to="/">
-                            <Button
-                                size="sm"
-                                variant="light"
-                                color="dimmed"
-                                fullWidth
-                            >
+                            <Button size="sm" variant="light" color="dimmed" fullWidth>
                                 Logout
                             </Button>
                         </Link>
@@ -103,6 +83,6 @@ function AccountSection() {
             </Stack>
         </div>
     );
-}
+};
 
 export default AccountSection;
