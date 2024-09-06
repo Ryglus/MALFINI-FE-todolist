@@ -28,7 +28,7 @@ const HomePage = () => {
             <ScrollArea
                 scrollHideDelay={500}
                 style={{
-                    height: isSmallScreen ? 'auto' : '69%',
+                    height: isSmallScreen ? 'auto' : '61%',
                     overflow: isSmallScreen ? 'visible' : 'hidden',
                     padding: '20px'
                 }}
