@@ -22,7 +22,7 @@ const DatePickerDropdown = ({ onDateChange, selectedDate }: DatePickerDropdownPr
             {!isDateSelected || selectedDate == null ? (
                 <Menu shadow="md">
                     <Menu.Target>
-                        <ActionIcon size={'lg'} ><IconCalendar size={16} /></ActionIcon>
+                        <ActionIcon  size={'lg'} ><IconCalendar size={16} /></ActionIcon>
                     </Menu.Target>
                     <Menu.Dropdown>
                         <DatePicker
@@ -38,6 +38,7 @@ const DatePickerDropdown = ({ onDateChange, selectedDate }: DatePickerDropdownPr
                     onChange={handleDateChange}
                     placeholder="Pick a date"
                     clearable
+                    valueFormat="DD-MM-YYYY"
                 />
             )}
         </>
