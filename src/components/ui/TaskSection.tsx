@@ -13,7 +13,9 @@ const TaskSection = ({ tasks, setTasks }: TaskSectionProps) => {
         updateTask(editedTask);
         setTasks(prevTasks => prevTasks.map(task => (task.id === editedTask.id ? editedTask : task)));
     };
-
+    const handleChangeTask = () => {
+        setTasks(loadTasks);
+    };
     const handleDeleteTask = (id: string) => {
         const recursiveDelete = (tasks: TaskType[]): TaskType[] => {
             return tasks
@@ -38,6 +40,7 @@ const TaskSection = ({ tasks, setTasks }: TaskSectionProps) => {
                         task={task}
                         onEdit={handleEditTask}
                         onDelete={handleDeleteTask}
+                        onChange={handleChangeTask}
                     />
                 ))
             ) : (

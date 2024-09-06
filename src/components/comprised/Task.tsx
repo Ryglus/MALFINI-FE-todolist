@@ -1,4 +1,14 @@
-import { Card, Text, Group, Tooltip, ActionIcon, Collapse, useMantineTheme, Title } from '@mantine/core';
+import {
+    Card,
+    Text,
+    Group,
+    Tooltip,
+    ActionIcon,
+    Collapse,
+    useMantineTheme,
+    Title,
+    Progress
+} from '@mantine/core';
 import { TaskType } from '../../types/TaskType.ts';
 import { IconEdit, IconTrash, IconChevronDown, IconChevronUp, IconSquareCheck } from '@tabler/icons-react';
 import { useState } from 'react';
@@ -9,9 +19,10 @@ interface TaskProps {
     task: TaskType;
     onEdit: (task: TaskType) => void;
     onDelete: (id: string) => void;
+    onChange: () => void;
 }
 
-function Task({ task, onEdit, onDelete }: TaskProps) {
+function Task({ task, onEdit, onDelete, onChange }: TaskProps) {
     const [collapsed, setCollapsed] = useState(true);
     const [checked, setChecked] = useState(task.completed); // Initialize with task's completed status
     const theme = useMantineTheme();
@@ -35,6 +46,7 @@ function Task({ task, onEdit, onDelete }: TaskProps) {
         const updatedTask = { ...task, completed: !checked };
         setChecked(prev => !prev); // Update local state
         updateTask(updatedTask); // Update in local storage
+        onChange();
     };
 
     return (
@@ -50,6 +62,24 @@ function Task({ task, onEdit, onDelete }: TaskProps) {
                     textDecoration: checked ? 'line-through' : 'none', // Strike-through if completed
                 }}
             >
+                {task.subTasks && task.subTasks.length > 0 && (
+                    <div
+                        style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            left: 0,
+                            width: '100%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                        }}
+                    >
+                        <Progress
+                            style={{ borderRadius: '0', height: '3px' }}
+                            value={(task.subTasks.filter(subTask => subTask.completed).length / task.subTasks.length) * 100}
+                            transitionDuration={250}
+                        />
+                    </div>
+                )}
                 <div
                     style={{
                         position: 'absolute',
@@ -149,7 +179,10 @@ function Task({ task, onEdit, onDelete }: TaskProps) {
                             {collapsed ? <IconChevronDown size={16} /> : <IconChevronUp size={16} />}
                         </ActionIcon>
                     )}
+
                 </div>
+
+
             </Card>
             {task.subTasks && task.subTasks.length > 0 && (
                 <Collapse in={!collapsed}>
@@ -172,6 +205,7 @@ function Task({ task, onEdit, onDelete }: TaskProps) {
                                 <Task
                                     task={subTask}
                                     onEdit={onEdit}
+                                    onChange={onChange}
                                     onDelete={onDelete}
                                 />
                             </div>

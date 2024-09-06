@@ -18,12 +18,28 @@ export const addTask = (task: TaskType): void => {
 
 export const updateTask = (updatedTask: TaskType): void => {
     const tasks = loadTasks();
-    const taskIndex = tasks.findIndex(task => task.id === updatedTask.id);
-    if (taskIndex > -1) {
-        tasks[taskIndex] = updatedTask;
-        saveTasks(tasks);
-    }
+
+    // Recursive function to find and update the task/subtask in the task tree
+    const updateTaskRecursive = (tasks: TaskType[], taskToUpdate: TaskType): TaskType[] => {
+        return tasks.map(task => {
+            if (task.id === taskToUpdate.id) {
+                return taskToUpdate; // Update the task if it matches
+            }
+            // If the task has subtasks, recursively update them as well
+            if (task.subTasks && task.subTasks.length > 0) {
+                return {
+                    ...task,
+                    subTasks: updateTaskRecursive(task.subTasks, taskToUpdate), // Recursively update subtasks
+                };
+            }
+            return task;
+        });
+    };
+
+    const updatedTasks = updateTaskRecursive(tasks, updatedTask);
+    saveTasks(updatedTasks); // Save the updated tasks back to local storage
 };
+
 
 export const deleteTask = (taskId: string): void => {
     const tasks = loadTasks();
