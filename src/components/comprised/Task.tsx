@@ -89,7 +89,7 @@ function Task({ task, onEdit, onDelete, onChange }: TaskProps) {
                     }}
                 >
                     {task.tags.map((tag, index) => (
-                        <Tooltip key={index} label={tag}>
+                        <Tooltip.Floating key={index} label={tag}>
                             <div
                                 style={{
                                     backgroundColor: getTagColor(tag),
@@ -99,19 +99,19 @@ function Task({ task, onEdit, onDelete, onChange }: TaskProps) {
                                     border: 'none',
                                 }}
                             />
-                        </Tooltip>
+                        </Tooltip.Floating>
                     ))}
                 </div>
                 <div
                     style={{
                         position: 'absolute',
-                        left: 0,
+                        left: 10,
                         top: 0,
+                        gap: 0,
                         bottom: 0,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        width: '50px',
                     }}
                 >
                     <ActionIcon
