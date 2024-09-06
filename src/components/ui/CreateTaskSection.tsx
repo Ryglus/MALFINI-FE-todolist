@@ -75,7 +75,7 @@ const CreateTaskSection = ({ onCreate }: CreateTaskSectionProps) => {
                         }}
                         required
                         label="NEW TASK"
-                        style={{ transition: 'width 0.3s ease', width: expanded ? '50%' : '100%' }} // Dynamic shrink/grow behavior
+                        style={{ transition: 'width 0.3s ease', width: expanded ? '50%' : '100%' }}
                     />
                     <Collapse in={expanded}>
 
@@ -124,19 +124,15 @@ const CreateTaskSection = ({ onCreate }: CreateTaskSectionProps) => {
                             />
                         </div>
 
-                        {/* Create Task Button takes full width but below the inputs */}
                         <Button
                             onClick={handleCreateTask}
                             color="blue"
-                            style={{ width: '100%', marginTop: '16px' }} // Add margin-top for spacing
+                            style={{ width: '100%', marginTop: '16px' }}
                         >
                             Create Task
                         </Button>
                     </Collapse>
                 </Grid.Col>
-
-
-
             </Grid>
         </div>
     );

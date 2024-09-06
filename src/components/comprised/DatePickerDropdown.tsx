@@ -13,7 +13,7 @@ const DatePickerDropdown = ({ onDateChange, selectedDate }: DatePickerDropdownPr
 
     const handleDateChange = (newDate: Date | null) => {
         onDateChange(newDate);
-        setIsDateSelected(!!newDate); // Update if date is selected or cleared
+        setIsDateSelected(!!newDate);
 
     };
 
@@ -32,7 +32,6 @@ const DatePickerDropdown = ({ onDateChange, selectedDate }: DatePickerDropdownPr
                     </Menu.Dropdown>
                 </Menu>
             ) : (
-                // Show the DateInput once a date has been selected
                 <DateInput
                     label="Date"
                     value={selectedDate}

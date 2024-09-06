@@ -12,8 +12,8 @@ import {
 import { TaskType } from '../../types/TaskType.ts';
 import { IconEdit, IconTrash, IconChevronDown, IconChevronUp, IconSquareCheck } from '@tabler/icons-react';
 import { useState } from 'react';
-import { updateTask } from '../../utils/taskStorage'; // Adjust the import path as needed
-import { format } from 'date-fns'; // Import the date-fns format function
+import { updateTask } from '../../utils/taskStorage';
+import { format } from 'date-fns';
 
 interface TaskProps {
     task: TaskType;
@@ -24,28 +24,24 @@ interface TaskProps {
 
 function Task({ task, onEdit, onDelete, onChange }: TaskProps) {
     const [collapsed, setCollapsed] = useState(true);
-    const [checked, setChecked] = useState(task.completed); // Initialize with task's completed status
+    const [checked, setChecked] = useState(task.completed);
     const theme = useMantineTheme();
 
-    // Calculate the percentage of subtasks completed
     const totalSubTasks = task.subTasks?.length || 0;
     const completedSubTasks = task.subTasks?.filter(subTask => subTask.completed).length || 0;
     const completionPercentage = totalSubTasks ? (completedSubTasks / totalSubTasks) * 100 : 0;
 
-    // Generate color for each tag dot (you can customize this logic)
     const getTagColor = (tag: string) => {
-        const colors = ['#FF7A00', '#6A5ACD', '#FF4500', '#4CAF50', '#FFC107', '#FAC1da']; // Add more colors as needed
-        return colors[tag.length % colors.length]; // Basic color assignment based on tag length
+        const colors = ['#FF7A00', '#6A5ACD', '#FF4500', '#4CAF50', '#FFC107', '#FAC1da'];
+        return colors[tag.length % colors.length];
     };
 
-    // Format the date using date-fns
     const formattedDate = task.date ? format(new Date(task.date), 'MMM dd, yyyy') : 'No date';
 
-    // Handle completion status change
     const handleCompleteToggle = () => {
         const updatedTask = { ...task, completed: !checked };
-        setChecked(prev => !prev); // Update local state
-        updateTask(updatedTask); // Update in local storage
+        setChecked(prev => !prev);
+        updateTask(updatedTask);
         onChange();
     };
 
@@ -153,7 +149,7 @@ function Task({ task, onEdit, onDelete, onChange }: TaskProps) {
                             borderRadius: 0,
                             borderBottom: '1px solid #ddd',
                         }}
-                        onClick={handleCompleteToggle} // Toggle completion status
+                        onClick={handleCompleteToggle}
                     >
                         <IconSquareCheck size={16} />
                     </ActionIcon>
@@ -198,8 +194,8 @@ function Task({ task, onEdit, onDelete, onChange }: TaskProps) {
                             <div
                                 key={index}
                                 style={{
-                                    flex: '100%', // Ensure each subtask takes up full width and wraps
-                                    margin: '0px', // Adjust margin as needed
+                                    flex: '100%',
+                                    margin: '0px',
                                 }}
                             >
                                 <Task

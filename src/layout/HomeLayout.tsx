@@ -19,7 +19,7 @@ interface HomeLayoutProps {
 
 const HomeLayout = ({title}: HomeLayoutProps) => {
     const theme = useMantineTheme();
-    const [opened, setOpened] = useState(false);  // State for Drawer visibility
+    const [opened, setOpened] = useState(false);
     const isSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.md}px)`);
 
     return (
@@ -71,7 +71,7 @@ const HomeLayout = ({title}: HomeLayoutProps) => {
                     maxWidth: '100vw',
                     border: 'none',
                     borderRadius: '0',
-                    height: 'auto',  // Auto height for small screens
+                    height: 'auto',
                 }}
                 className="mantine-hidden-from-md"
             >

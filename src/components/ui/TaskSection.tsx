@@ -19,16 +19,16 @@ const TaskSection = ({ tasks, setTasks }: TaskSectionProps) => {
     const handleDeleteTask = (id: string) => {
         const recursiveDelete = (tasks: TaskType[]): TaskType[] => {
             return tasks
-                .filter(task => task.id !== id) // Remove the task with the matching id
+                .filter(task => task.id !== id)
                 .map(task => ({
                     ...task,
-                    subTasks: recursiveDelete(task.subTasks || []), // Recursively check and delete in subTasks
+                    subTasks: recursiveDelete(task.subTasks || []),
                 }));
         };
 
-        const updatedTasks = recursiveDelete(loadTasks()); // Get updated task list after deletion
-        setTasks(updatedTasks); // Update the state with the new task list
-        saveTasks(updatedTasks); // Save the updated tasks to local storage
+        const updatedTasks = recursiveDelete(loadTasks());
+        setTasks(updatedTasks);
+        saveTasks(updatedTasks);
     };
 
     return (

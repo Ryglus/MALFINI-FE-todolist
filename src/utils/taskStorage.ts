@@ -23,13 +23,12 @@ export const updateTask = (updatedTask: TaskType): void => {
     const updateTaskRecursive = (tasks: TaskType[], taskToUpdate: TaskType): TaskType[] => {
         return tasks.map(task => {
             if (task.id === taskToUpdate.id) {
-                return taskToUpdate; // Update the task if it matches
+                return taskToUpdate;
             }
-            // If the task has subtasks, recursively update them as well
             if (task.subTasks && task.subTasks.length > 0) {
                 return {
                     ...task,
-                    subTasks: updateTaskRecursive(task.subTasks, taskToUpdate), // Recursively update subtasks
+                    subTasks: updateTaskRecursive(task.subTasks, taskToUpdate),
                 };
             }
             return task;
@@ -37,7 +36,7 @@ export const updateTask = (updatedTask: TaskType): void => {
     };
 
     const updatedTasks = updateTaskRecursive(tasks, updatedTask);
-    saveTasks(updatedTasks); // Save the updated tasks back to local storage
+    saveTasks(updatedTasks);
 };
 
 

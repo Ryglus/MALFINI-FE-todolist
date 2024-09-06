@@ -12,7 +12,6 @@ const HomePage = () => {
     const [tasks, setTasks] = useState<TaskType[]>([]);
 
     useEffect(() => {
-        // Load initial tasks from local storage
         setTasks(loadTasks());
     }, []);
 
@@ -29,7 +28,7 @@ const HomePage = () => {
             <ScrollArea
                 scrollHideDelay={500}
                 style={{
-                    height: isSmallScreen ? 'auto' : '86vh',  // Full height on larger screens, auto height on small
+                    height: isSmallScreen ? 'auto' : '69%',
                     overflow: isSmallScreen ? 'visible' : 'hidden',
                     padding: '20px'
                 }}

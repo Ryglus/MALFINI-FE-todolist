@@ -2,7 +2,7 @@ export interface TaskType {
     id: string;
     subTasks?: this[];
     tags: string[];
-    date: string; // ISO date string or a format suitable for your date picker
+    date: string;
     description?: string;
     name: string;
     completed: boolean;

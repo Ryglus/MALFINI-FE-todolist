@@ -11,7 +11,6 @@ const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChange }) =
     const theme = useMantineTheme();
     const { colors } = theme;
 
-    // Create an array of 5 dates centered around the selected date
     const startDate = subDays(selectedDate, 2);
     const dates = Array.from({ length: 5 }, (_, i) => addDays(startDate, i));
 

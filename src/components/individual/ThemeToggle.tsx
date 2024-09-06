@@ -8,7 +8,6 @@ function ThemeToggle() {
     return (
         <Button
             onClick={() => toggleColorScheme()}
-
             aria-label="Toggle color scheme"
         >
             {colorScheme === 'dark' ? (
