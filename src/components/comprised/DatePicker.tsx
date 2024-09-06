@@ -17,14 +17,14 @@ const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChange }) =
 
     return (
         <div style={{margin:'0 auto'}}>
-            <Group style={{ overflowY: "hidden", display: 'flex' }}>
+            <Group style={{ overflowY: "hidden", display: 'flex', gap:'1px' }}>
                 {dates.map((date) => {
                     const isSelected = date.toDateString() === selectedDate.toDateString();
                     return (
                         <Button
                             key={date.toDateString()}
                             style={{
-                                padding:'0.1em',
+                                padding:'8px',
                                 color: isSelected ? colors.gray[0] : colors.dark[7],
                                 cursor: 'pointer',
                                 transition: 'background-color 0.3s ease',
