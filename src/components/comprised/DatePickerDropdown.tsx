@@ -14,14 +14,15 @@ const DatePickerDropdown = ({ onDateChange, selectedDate }: DatePickerDropdownPr
     const handleDateChange = (newDate: Date | null) => {
         onDateChange(newDate);
         setIsDateSelected(!!newDate); // Update if date is selected or cleared
+
     };
 
     return (
         <>
-            {!isDateSelected ? (
+            {!isDateSelected || selectedDate == null ? (
                 <Menu shadow="md">
                     <Menu.Target>
-                        <ActionIcon ><IconCalendar size={16} /></ActionIcon>
+                        <ActionIcon size={'lg'} ><IconCalendar size={16} /></ActionIcon>
                     </Menu.Target>
                     <Menu.Dropdown>
                         <DatePicker

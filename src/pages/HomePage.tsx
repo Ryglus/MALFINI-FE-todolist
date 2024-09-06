@@ -4,7 +4,7 @@ import { useMediaQuery } from '@mantine/hooks';
 import CreateTaskSection from "../components/ui/CreateTaskSection.tsx";
 import { TaskType } from "../types/TaskType.ts";
 import { useState, useEffect } from "react";
-import { loadTasks, addTask } from '../utils/taskStorage.ts';
+import { loadTasks } from '../utils/taskStorage.ts';
 
 const HomePage = () => {
     const theme = useMantineTheme();
@@ -16,14 +16,13 @@ const HomePage = () => {
         setTasks(loadTasks());
     }, []);
 
-    const handleCreateTask = (newTask: TaskType) => {
-        addTask(newTask);
-        setTasks(prevTasks => [...prevTasks, newTask]);
+    const handleCreateTask = () => {
+        setTasks(loadTasks());
     };
 
     return (
         <>
-            <Card style={{margin:'20px 15px 0px 0px'}}>
+            <Card className="mantine-visible-from-md" style={{margin:'20px 15px 0px 0px'}}>
                 <CreateTaskSection onCreate={handleCreateTask} />
             </Card>
 

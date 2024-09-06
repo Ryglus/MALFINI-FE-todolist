@@ -38,7 +38,7 @@ function Task({ task, onEdit, onDelete }: TaskProps) {
     };
 
     return (
-        <div style={{ marginBlock: '5px', minHeight: '100px' }}>
+        <div style={{ marginBottom: '5px', minHeight: '100px' }}>
             <Card
                 shadow="sm"
                 padding="lg"
@@ -136,7 +136,8 @@ function Task({ task, onEdit, onDelete }: TaskProps) {
                     >
                         <IconTrash size={16} />
                     </ActionIcon>
-                    {task.subTasks && (
+
+                    {task.subTasks && task.subTasks.length > 0 && (
                         <ActionIcon
                             onClick={() => setCollapsed(!collapsed)}
                             style={{
@@ -150,22 +151,22 @@ function Task({ task, onEdit, onDelete }: TaskProps) {
                     )}
                 </div>
             </Card>
-            {task.subTasks && (
+            {task.subTasks && task.subTasks.length > 0 && (
                 <Collapse in={!collapsed}>
                     <Group
                         style={{
+                            paddingTop: '5px',
                             paddingLeft: '20px',
                             width: '100%',
-                            display: 'flex',
-                            flexWrap: 'wrap', // Ensure items wrap to the next line if needed
+                            gap: '0px',
                         }}
                     >
                         {task.subTasks.map((subTask, index) => (
                             <div
                                 key={index}
                                 style={{
-                                    flex: '1 1 100%', // Ensure each subtask takes up full width and wraps
-                                    marginBottom: '10px', // Adjust margin as needed
+                                    flex: '100%', // Ensure each subtask takes up full width and wraps
+                                    margin: '0px', // Adjust margin as needed
                                 }}
                             >
                                 <Task

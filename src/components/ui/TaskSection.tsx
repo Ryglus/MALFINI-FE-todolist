@@ -1,7 +1,7 @@
 import { Text } from '@mantine/core';
 import { TaskType } from '../../types/TaskType.ts';
 import Task from '../comprised/Task.tsx';
-import { updateTask, deleteTask } from '../../utils/taskStorage'; // Adjust the import path as needed
+import {updateTask, saveTasks, loadTasks} from '../../utils/taskStorage'; // Adjust the import path as needed
 
 interface TaskSectionProps {
     tasks: TaskType[];
@@ -15,8 +15,18 @@ const TaskSection = ({ tasks, setTasks }: TaskSectionProps) => {
     };
 
     const handleDeleteTask = (id: string) => {
-        deleteTask(id);
-        setTasks(prevTasks => prevTasks.filter(task => task.id !== id));
+        const recursiveDelete = (tasks: TaskType[]): TaskType[] => {
+            return tasks
+                .filter(task => task.id !== id) // Remove the task with the matching id
+                .map(task => ({
+                    ...task,
+                    subTasks: recursiveDelete(task.subTasks || []), // Recursively check and delete in subTasks
+                }));
+        };
+
+        const updatedTasks = recursiveDelete(loadTasks()); // Get updated task list after deletion
+        setTasks(updatedTasks); // Update the state with the new task list
+        saveTasks(updatedTasks); // Save the updated tasks to local storage
     };
 
     return (
