@@ -1,4 +1,4 @@
-import {Divider, Text, Group, TextInput, Avatar, Stack, Button} from '@mantine/core';
+import {Divider, Text, Group, Avatar, Stack, Button, useMantineTheme} from '@mantine/core';
 import { Link } from 'react-router-dom';
 import DatePicker from "../comprised/DatePicker.tsx";
 import {useState} from "react";
@@ -6,7 +6,7 @@ import TaskChart from "../comprised/TaskChart.tsx";
 
 function AccountSection() {
     const [selectedDate, setSelectedDate] = useState(new Date());
-
+    const theme = useMantineTheme();
     return (
         <div
             style={{
@@ -33,32 +33,73 @@ function AccountSection() {
 
                 <Divider/>
 
-                <Stack>
-                    <Link to="/">
-                        <Button size="sm" c="dimmed">Today tasks</Button>
-                    </Link>
+                <div
+                    style={{
+
+                        display: 'flex',
+                        flexDirection: 'column',
+                    }}
+                >
                     <Stack>
-                        <Text size="sm" c="#FF7A00">&bull; Personal</Text>
-                        <Text size="sm" c="#6A5ACD">&bull; Freelance</Text>
-                        <Text size="sm" c="#FF4500">&bull; Work</Text>
+                        <Link to="/">
+                            <Button
+                                size="sm"
+                                variant="light"
+                                color="dimmed"
+                                fullWidth
+                            >
+                                Today tasks
+                            </Button>
+                        </Link>
+                        <Stack >
+                            <Text size="sm" c={theme.colors.orange[6]}>
+                                &bull; Personal
+                            </Text>
+                            <Text size="sm" c={theme.colors.blue[6]}>
+                                &bull; Freelance
+                            </Text>
+                            <Text size="sm" c={theme.colors.red[6]}>
+                                &bull; Work
+                            </Text>
+                        </Stack>
                     </Stack>
-                    <TextInput placeholder="Add filter" size="xs" radius="md" />
-                </Stack>
 
-                <Divider />
+                    <Divider my="sm" />
 
-                <Stack>
-                    <Link to="/">
-                        <Text size="sm" c="dimmed">Scheduled tasks</Text>
-                    </Link>
-                    <Link to="/settings">
-                        <Text size="sm" c="dimmed">Settings</Text>
-                    </Link>
-                    <Divider />
-                    <Link to="/">
-                        <Text size="sm" c="dimmed">Logout</Text>
-                    </Link>
-                </Stack>
+                    <Stack  mt="md">
+                        <Link to="/">
+                            <Button
+                                size="sm"
+                                variant="light"
+                                color="dimmed"
+                                fullWidth
+                            >
+                                Scheduled tasks
+                            </Button>
+                        </Link>
+                        <Link to="/settings">
+                            <Button
+                                size="sm"
+                                variant="light"
+                                color="dimmed"
+                                fullWidth
+                            >
+                                Settings
+                            </Button>
+                        </Link>
+                        <Divider my="sm" />
+                        <Link to="/">
+                            <Button
+                                size="sm"
+                                variant="light"
+                                color="dimmed"
+                                fullWidth
+                            >
+                                Logout
+                            </Button>
+                        </Link>
+                    </Stack>
+                </div>
             </Stack>
         </div>
     );

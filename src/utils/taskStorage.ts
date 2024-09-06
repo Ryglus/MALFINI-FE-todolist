@@ -18,8 +18,6 @@ export const addTask = (task: TaskType): void => {
 
 export const updateTask = (updatedTask: TaskType): void => {
     const tasks = loadTasks();
-
-    // Recursive function to find and update the task/subtask in the task tree
     const updateTaskRecursive = (tasks: TaskType[], taskToUpdate: TaskType): TaskType[] => {
         return tasks.map(task => {
             if (task.id === taskToUpdate.id) {
@@ -41,7 +39,16 @@ export const updateTask = (updatedTask: TaskType): void => {
 
 
 export const deleteTask = (taskId: string): void => {
+    const recursiveDelete = (tasks: TaskType[]): TaskType[] => {
+        return tasks
+            .filter(task => task.id !== taskId)
+            .map(task => ({
+                ...task,
+                subTasks: recursiveDelete(task.subTasks || []),
+            }));
+    };
+
     const tasks = loadTasks();
-    const updatedTasks = tasks.filter(task => task.id !== taskId);
+    const updatedTasks = recursiveDelete(tasks);
     saveTasks(updatedTasks);
 };

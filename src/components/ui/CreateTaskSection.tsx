@@ -99,7 +99,7 @@ const CreateTaskSection = ({ onCreate }: CreateTaskSectionProps) => {
                                 value={existingTaskId}
                                 onChange={setExistingTaskId}
                                 label="Sub-Task of"
-                                clearable
+                                searchable
                                 style={{maxWidth:'130px'}}
                             />
                         </Collapse>

@@ -1,7 +1,7 @@
 import { Text } from '@mantine/core';
 import { TaskType } from '../../types/TaskType.ts';
 import Task from '../comprised/Task.tsx';
-import {updateTask, saveTasks, loadTasks} from '../../utils/taskStorage'; // Adjust the import path as needed
+import {updateTask, loadTasks, deleteTask} from '../../utils/taskStorage'; // Adjust the import path as needed
 
 interface TaskSectionProps {
     tasks: TaskType[];
@@ -17,18 +17,8 @@ const TaskSection = ({ tasks, setTasks }: TaskSectionProps) => {
         setTasks(loadTasks);
     };
     const handleDeleteTask = (id: string) => {
-        const recursiveDelete = (tasks: TaskType[]): TaskType[] => {
-            return tasks
-                .filter(task => task.id !== id)
-                .map(task => ({
-                    ...task,
-                    subTasks: recursiveDelete(task.subTasks || []),
-                }));
-        };
-
-        const updatedTasks = recursiveDelete(loadTasks());
-        setTasks(updatedTasks);
-        saveTasks(updatedTasks);
+        deleteTask(id);
+        setTasks(loadTasks());
     };
 
     return (

@@ -28,12 +28,13 @@ const HomePage = () => {
             <ScrollArea
                 scrollHideDelay={500}
                 style={{
-                    height: isSmallScreen ? 'auto' : '61%',
+                    height: isSmallScreen ? 'auto' : '73vh',
                     overflow: isSmallScreen ? 'visible' : 'hidden',
                     padding: '20px'
                 }}
             >
                 <TaskSection tasks={tasks} setTasks={setTasks} />
+
             </ScrollArea>
         </>
     );
