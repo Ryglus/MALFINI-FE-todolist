@@ -1,7 +1,8 @@
-import { Divider, Text, Group, TextInput, Avatar, Stack } from '@mantine/core';
+import {Divider, Text, Group, TextInput, Avatar, Stack, Button} from '@mantine/core';
 import { Link } from 'react-router-dom';
 import DatePicker from "../comprised/DatePicker.tsx";
 import {useState} from "react";
+import TaskChart from "../comprised/TaskChart.tsx";
 
 function AccountSection() {
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -22,29 +23,40 @@ function AccountSection() {
                     <Avatar size="lg" radius="xl" />
                     <Text size="md">Account Name</Text>
                 </Group>
+
+                <Divider/>
+
+                <TaskChart />
+                <Divider/>
+
                 <DatePicker selectedDate={selectedDate} onDateChange={setSelectedDate} />
-                <Divider my="sm" color="#EDEDED" />
+
+                <Divider/>
 
                 <Stack>
                     <Link to="/">
-                        <Text size="sm" color="dimmed">Today tasks</Text>
+                        <Button size="sm" c="dimmed">Today tasks</Button>
                     </Link>
                     <Stack>
-                        <Text size="sm" color="#FF7A00">&bull; Personal</Text>
-                        <Text size="sm" color="#6A5ACD">&bull; Freelance</Text>
-                        <Text size="sm" color="#FF4500">&bull; Work</Text>
+                        <Text size="sm" c="#FF7A00">&bull; Personal</Text>
+                        <Text size="sm" c="#6A5ACD">&bull; Freelance</Text>
+                        <Text size="sm" c="#FF4500">&bull; Work</Text>
                     </Stack>
                     <TextInput placeholder="Add filter" size="xs" radius="md" />
                 </Stack>
 
-                <Divider my="sm" color="#EDEDED" />
+                <Divider />
 
                 <Stack>
                     <Link to="/">
-                        <Text size="sm" color="dimmed">Scheduled tasks</Text>
+                        <Text size="sm" c="dimmed">Scheduled tasks</Text>
                     </Link>
                     <Link to="/settings">
-                        <Text size="sm" color="dimmed">Settings</Text>
+                        <Text size="sm" c="dimmed">Settings</Text>
+                    </Link>
+                    <Divider />
+                    <Link to="/">
+                        <Text size="sm" c="dimmed">Logout</Text>
                     </Link>
                 </Stack>
             </Stack>
