@@ -1,19 +1,18 @@
 import React from 'react';
 import { Text, useMantineTheme, RingProgress, Group, Paper, Tooltip } from '@mantine/core';
 import { useTasks } from '../../context/TaskContext';
-import { toLocalISODateString } from '../../utils/TimeBeTiming.ts';
-import {useNavigateToMainIfNotOnMain} from "../../utils/navUtil.ts";
+import { getTodaysTasksRecursive } from '../../utils/taskUtils';
+import { useNavigateToMainIfNotOnMain } from "../../utils/navUtil.ts";
 
 const TaskChart: React.FC = () => {
     const theme = useMantineTheme();
     const { tasks, setSelectedDate } = useTasks();
     const navigateToMainIfNotOnMain = useNavigateToMainIfNotOnMain();
 
-    const today = toLocalISODateString(new Date());
-
-    const todayTasks = tasks.filter(task => toLocalISODateString(new Date(task.date)) === today);
+    const todayTasks = getTodaysTasksRecursive(tasks);
     const totalTasks = todayTasks.length;
     const completedTasks = todayTasks.filter(task => task.completed).length;
+
     const completionPercentage = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
 
     const handleClick = () => {

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Stack, Text, Chip } from '@mantine/core';
+import { Text, Chip, Group} from '@mantine/core';
 import { useTasks } from '../../context/TaskContext';
 import { useNavigateToMainIfNotOnMain } from "../../utils/navUtil.ts";
 
@@ -20,7 +20,7 @@ const TagSection: React.FC = () => {
     };
 
     return (
-        <Stack>
+        <Group>
             <Text size="lg">Filter by Tags</Text>
             <Chip.Group multiple value={selectedTagIds} onChange={handleTagChange}>
                 {tags.map(tag => (
@@ -29,7 +29,7 @@ const TagSection: React.FC = () => {
                     </Chip>
                 ))}
             </Chip.Group>
-        </Stack>
+        </Group>
     );
 };
 

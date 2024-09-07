@@ -14,6 +14,7 @@ import { TaskType } from '../../types/TaskType.ts';
 import { IconEdit, IconTrash, IconChevronDown, IconChevronUp, IconSquareCheck } from '@tabler/icons-react';
 import { useTasks } from '../../context/TaskContext';
 import { format } from 'date-fns';
+import EditTaskModal from '../individual/EditTaskModal';
 
 interface TaskProps {
     task: TaskType;
@@ -23,6 +24,7 @@ interface TaskProps {
 function Task({ task, onEdit }: TaskProps) {
     const [collapsed, setCollapsed] = useState(true);
     const [checked, setChecked] = useState(task.completed);
+    const [modalOpened, setModalOpened] = useState(false);
     const theme = useMantineTheme();
     const { updateTask, deleteTask, tags } = useTasks();
 
@@ -47,8 +49,12 @@ function Task({ task, onEdit }: TaskProps) {
         deleteTask(task.id);
     };
 
+    const handleSave = (updatedTask: TaskType) => {
+        updateTask(updatedTask);
+    };
+
     return (
-        <div style={{ marginBottom: '5px', minHeight: '100px' }}>
+        <div style={{ marginBottom: '5px', }}>
             <Card
                 shadow="sm"
                 padding="lg"
@@ -120,7 +126,7 @@ function Task({ task, onEdit }: TaskProps) {
                         size="md"
                         variant="subtle"
                         color="blue"
-                        onClick={() => onEdit(task)}
+                        onClick={() => setModalOpened(true)}
                         style={{ height: '100%' }}
                     >
                         <IconEdit size={16} />
@@ -177,7 +183,6 @@ function Task({ task, onEdit }: TaskProps) {
                             {collapsed ? <IconChevronDown size={16} /> : <IconChevronUp size={16} />}
                         </ActionIcon>
                     )}
-
                 </div>
             </Card>
             {task.subTasks && task.subTasks.length > 0 && (
@@ -207,6 +212,12 @@ function Task({ task, onEdit }: TaskProps) {
                     </Group>
                 </Collapse>
             )}
+            <EditTaskModal
+                task={task}
+                opened={modalOpened}
+                onClose={() => setModalOpened(false)}
+                onSave={handleSave}
+            />
         </div>
     );
 }

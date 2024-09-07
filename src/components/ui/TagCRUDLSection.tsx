@@ -1,8 +1,22 @@
 import React, { useState } from 'react';
-import { Button, TextInput, Stack, Text, Group, ColorPicker, Modal } from '@mantine/core';
+import {
+    Button,
+    TextInput,
+    Text,
+    Group,
+    ColorPicker,
+    Modal,
+    Card,
+    Grid,
+    Tooltip,
+    ActionIcon,
+    Flex,
+    Divider
+} from '@mantine/core';
 import { v4 as uuidv4 } from 'uuid';
 import { TagType } from '../../types/TagType.ts';
 import { useTasks } from '../../context/TaskContext';
+import {IconEdit, IconTrash} from "@tabler/icons-react";
 
 const TagCRUDLSection: React.FC = () => {
     const { tags, addTag, updateTag, deleteTag } = useTasks();
@@ -57,40 +71,75 @@ const TagCRUDLSection: React.FC = () => {
 
     return (
         <div>
-            <Button onClick={() => openModal(null)} color="blue" mb="md">Add New Tag</Button>
-            <Stack>
-                {tags.map(tag => (
-                    <Group key={tag.id}>
-                        <Text style={{ color: tag.color }}>{tag.name}</Text>
-                        <Group>
-                            <Button onClick={() => openModal(tag)} color="yellow" size="xs">Edit</Button>
-                            <Button onClick={() => handleDeleteTag(tag.id)} color="red" size="xs">Delete</Button>
-                        </Group>
-                    </Group>
-                ))}
-            </Stack>
+
+            <Card>
+                <Flex justify="space-between" align="center" mb="md">
+                    <Text size="xl" fw={500}>Tag Controls</Text>
+                    <Button onClick={() => openModal(null)} color="blue">Add New Tag</Button>
+                </Flex>
+                <Divider mb={15}/>
+                <Grid>
+                    {tags.map(tag => (
+                        <Grid.Col span={{ base: 12, sm: 6 }} key={tag.id}>
+                            <Card shadow="sm" padding="lg" style={{ position: 'relative' }}>
+                                <div
+                                    style={{
+                                        position: 'absolute',
+                                        left: 0,
+                                        top: 0,
+                                        bottom: 0,
+                                        width: '10px',
+                                        backgroundColor: tag.color,
+                                    }}
+                                />
+                                <Group align="center">
+                                    <Text size="lg" fw={500}>{tag.name}</Text>
+                                    <Group  style={{ marginLeft: 'auto' }}>
+                                        <Tooltip label="Edit">
+                                            <ActionIcon size="md" variant="subtle" color="yellow" onClick={() => openModal(tag)}>
+                                                <IconEdit size={16} />
+                                            </ActionIcon>
+                                        </Tooltip>
+                                        <Tooltip label="Delete">
+                                            <ActionIcon size="md" variant="subtle" color="red" onClick={() => handleDeleteTag(tag.id)}>
+                                                <IconTrash size={16} />
+                                            </ActionIcon>
+                                        </Tooltip>
+                                    </Group>
+                                </Group>
+                            </Card>
+                        </Grid.Col>
+                    ))}
+                </Grid>
+            </Card>
+
+
 
             <Modal
                 opened={isModalOpen}
                 onClose={closeModal}
                 title={editingTag ? 'Edit Tag' : 'Add New Tag'}
             >
-                <TextInput
-                    label="Tag Name"
-                    value={newTagName}
-                    onChange={(e) => setNewTagName(e.currentTarget.value)}
-                    placeholder="Enter tag name"
-                />
-                <ColorPicker
-                    format="hex"
-                    value={newTagColor}
-                    onChange={setNewTagColor}
-                    style={{ marginTop: '1rem' }}
-                />
-                <Group mt="md">
-                    <Button onClick={closeModal} variant="outline">Cancel</Button>
-                    <Button onClick={handleSaveTag} color="blue">Save</Button>
-                </Group>
+                <center>
+                    <TextInput
+                        label="Tag Name"
+                        value={newTagName}
+                        onChange={(e) => setNewTagName(e.currentTarget.value)}
+                        placeholder="Enter tag name"
+                    />
+                    <ColorPicker
+                        format="hex"
+                        swatches={['#2e2e2e', '#868e96', '#fa5252', '#e64980', '#be4bdb', '#7950f2', '#4c6ef5', '#228be6', '#15aabf', '#12b886', '#40c057', '#82c91e', '#fab005', '#fd7e14']}
+                        value={newTagColor}
+                        onChange={setNewTagColor}
+                        style={{marginTop: '1rem'}}
+                    />
+                    <Flex justify="space-between" align="center" mt={15}>
+                        <Button onClick={handleSaveTag} >Save</Button>
+                        <Button onClick={closeModal} variant="outline" color="red">Cancel</Button>
+                    </Flex>
+                </center>
+
             </Modal>
         </div>
     );

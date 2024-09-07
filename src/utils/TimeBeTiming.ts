@@ -8,7 +8,7 @@ import { DateTime } from 'luxon';
 export const toLocalISODateString = (date: Date | null): string | null => {
     if (date) {
         const localDate = DateTime.fromJSDate(date);
-        return localDate.toISODate(); // `toISODate()` gives the YYYY-MM-DD format
+        return localDate.toISODate();
     }
     return null;
 };

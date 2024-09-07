@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { TaskType } from '../types/TaskType.ts';
+import { TaskType } from '../types/TaskType';
 import { loadTasks, addTask as addTaskStorage, updateTask as updateTaskStorage, deleteTask as deleteTaskStorage } from '../utils/taskStorage';
-import { TagType } from '../types/TagType.ts';
+import { TagType } from '../types/TagType';
 import { loadTags, addTag as addTagStorage, updateTag as updateTagStorage, deleteTag as deleteTagStorage } from '../utils/tagStorage';
+import { updateTaskRecursive, recursiveDelete } from '../utils/taskUtils';
 
 interface TaskContextType {
     tasks: TaskType[];
@@ -48,62 +49,38 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const updateTask = (updatedTask: TaskType) => {
         updateTaskStorage(updatedTask);
-        setTasks(prevTasks => {
-            const updateTaskRecursive = (tasks: TaskType[], taskToUpdate: TaskType): TaskType[] => {
-                return tasks.map(task => {
-                    if (task.id === taskToUpdate.id) {
-                        return taskToUpdate;
-                    }
-                    if (task.subTasks && task.subTasks.length > 0) {
-                        return {
-                            ...task,
-                            subTasks: updateTaskRecursive(task.subTasks, taskToUpdate),
-                        };
-                    }
-                    return task;
-                });
-            };
-
-            return updateTaskRecursive(prevTasks, updatedTask);
-        });
+        setTasks(prevTasks => updateTaskRecursive(prevTasks, updatedTask));
     };
 
     const deleteTask = (taskId: string) => {
         deleteTaskStorage(taskId);
-        setTasks(prevTasks => {
-            const recursiveDelete = (tasks: TaskType[]): TaskType[] => {
-                return tasks
-                    .filter(task => task.id !== taskId)
-                    .map(task => ({
-                        ...task,
-                        subTasks: recursiveDelete(task.subTasks || []),
-                    }));
-            };
-
-            return recursiveDelete(prevTasks);
-        });
-    };
-
-    const filterTasksByDate = (tasks: TaskType[], date: Date | null): TaskType[] => {
-        if (!date) return tasks;
-
-        return tasks.filter(task => {
-            const taskDate = new Date(task.date);
-            return taskDate.toDateString() === date.toDateString();
-        });
-    };
-
-    const filterTasksByTags = (tasks: TaskType[], selectedTagIds: string[]): TaskType[] => {
-        if (selectedTagIds.length === 0) return tasks;
-
-        return tasks.filter(task => {
-            return selectedTagIds.every(tagId => task.tags.includes(tagId));
-        });
+        setTasks(prevTasks => recursiveDelete(prevTasks, taskId));
     };
 
     const filterTasks = (tasks: TaskType[], date: Date | null, tags: string[]): TaskType[] => {
-        const filteredByDate = filterTasksByDate(tasks, date);
-        return filterTasksByTags(filteredByDate, tags);
+        const filterByDateAndTags = (task: TaskType): boolean => {
+            const matchesDate = date ? new Date(task.date).toDateString() === date.toDateString() : true;
+            const matchesTags = tags.length > 0 ? tags.every(tagId => task.tags.includes(tagId)) : true;
+            return matchesDate && matchesTags;
+        };
+
+        const filterRecursive = (tasks: TaskType[]): TaskType[] => {
+            return tasks.reduce((result: TaskType[], task: TaskType) => {
+                const filteredSubTasks = filterRecursive(task.subTasks || []);
+                const taskMatches = filterByDateAndTags(task);
+                const hasMatchingSubTasks = filteredSubTasks.length > 0;
+
+                if (taskMatches || hasMatchingSubTasks) {
+                    result.push({
+                        ...task,
+                        subTasks: filteredSubTasks,
+                    });
+                }
+
+                return result;
+            }, []);
+        };
+        return filterRecursive(tasks);
     };
 
     const createTask = (task: TaskType, parentId?: string | null) => {

@@ -30,6 +30,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ currentDate, onDateChange }) =>
     }
     return (
         <div style={{ margin: '0 auto', width: '100%' }}>
+            <Text size="lg">Filter by Date</Text>
             <Group
                 style={{
                     display: 'flex',
@@ -38,6 +39,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ currentDate, onDateChange }) =>
                     marginBottom: '10px',
                 }}
             >
+
                 {dates.map((date) => {
                     const isSelected = currentDate && date.toDateString() === currentDate.toDateString();
                     return (
