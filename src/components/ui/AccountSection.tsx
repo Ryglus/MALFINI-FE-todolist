@@ -8,12 +8,17 @@ import {useNavigateToMainIfNotOnMain} from "../../utils/navUtil.ts";
 import TagSection from "./TagSection.tsx";
 
 const AccountSection: React.FC = () => {
-    const { selectedDate, setSelectedDate } = useTasks();
+    const { selectedDate, setSelectedDate,setSelectedTags } = useTasks();
     useMantineTheme();
     const navigateToMainIfNotOnMain = useNavigateToMainIfNotOnMain();
 
     const handleDateChange = (date: Date | null) => {
         setSelectedDate(date);
+        if (date) setSelectedDate(date);
+        else {
+            setSelectedDate(date);
+            setSelectedTags([]);
+        }
         navigateToMainIfNotOnMain();
     };
 
@@ -51,10 +56,7 @@ const AccountSection: React.FC = () => {
                     }}
                 >
                     <Stack>
-                        <Text>tags</Text>
-                        <Stack>
-                            <TagSection />
-                        </Stack>
+                        <TagSection />
                     </Stack>
 
                     <Divider my="sm" />

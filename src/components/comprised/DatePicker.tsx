@@ -10,13 +10,13 @@ interface DatePickerProps {
 const DatePicker: React.FC<DatePickerProps> = ({ currentDate, onDateChange }) => {
     const theme = useMantineTheme();
     const { colors } = theme;
-    const [startDate, setStartDate] = useState<Date>(subDays(new Date(), 2)); // Start range fixed around today initially
+    const [startDate, setStartDate] = useState<Date>(subDays(new Date(), 2));
 
     useEffect(() => {
         if (currentDate) {
             setStartDate(subDays(currentDate, 2));
         } else {
-            setStartDate(subDays(new Date(), 2)); // Default to today if no currentDate
+            setStartDate(subDays(new Date(), 2));
         }
     }, [currentDate]);
 
@@ -25,7 +25,9 @@ const DatePicker: React.FC<DatePickerProps> = ({ currentDate, onDateChange }) =>
     const handleDateChange = (date: Date | null) => {
         onDateChange(date);
     };
-
+    const handleDefaultChange = () => {
+        onDateChange(null);
+    }
     return (
         <div style={{ margin: '0 auto', width: '100%' }}>
             <Group
@@ -33,7 +35,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ currentDate, onDateChange }) =>
                     display: 'flex',
                     justifyContent: 'space-between',
                     gap: '1px',
-                    marginBottom: '10px', // Adds space between the date buttons and "All tasks" button
+                    marginBottom: '10px',
                 }}
             >
                 {dates.map((date) => {
@@ -71,7 +73,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ currentDate, onDateChange }) =>
                     transition: 'background-color 0.3s ease',
                     textAlign: 'center',
                 }}
-                onClick={() => handleDateChange(null)}
+                onClick={() => handleDefaultChange()}
             >
                 All tasks
             </Button>

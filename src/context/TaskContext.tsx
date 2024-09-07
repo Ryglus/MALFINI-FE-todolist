@@ -1,18 +1,24 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { TaskType } from '../types/TaskType.ts';
 import { loadTasks, addTask as addTaskStorage, updateTask as updateTaskStorage, deleteTask as deleteTaskStorage } from '../utils/taskStorage';
+import { TagType } from '../types/TagType.ts';
+import { loadTags, addTag as addTagStorage, updateTag as updateTagStorage, deleteTag as deleteTagStorage } from '../utils/tagStorage';
 
 interface TaskContextType {
     tasks: TaskType[];
     filteredTasks: TaskType[];
     selectedDate: Date | null;
     selectedTags: string[];
+    tags: TagType[];
     addTask: (task: TaskType) => void;
     updateTask: (task: TaskType) => void;
     deleteTask: (taskId: string) => void;
     setSelectedDate: (date: Date | null) => void;
     setSelectedTags: (tags: string[]) => void;
     createTask: (task: TaskType, parentId?: string | null) => void;
+    addTag: (tag: TagType) => void;
+    updateTag: (tag: TagType) => void;
+    deleteTag: (tagId: string) => void;
 }
 
 const TaskContext = createContext<TaskContextType | undefined>(undefined);
@@ -22,10 +28,13 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [filteredTasks, setFilteredTasks] = useState<TaskType[]>([]);
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [tags, setTags] = useState<TagType[]>([]);
 
     useEffect(() => {
         const storedTasks = loadTasks();
+        const storedTags = loadTags();
         setTasks(storedTasks);
+        setTags(storedTags);
     }, []);
 
     useEffect(() => {
@@ -84,11 +93,11 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
     };
 
-    const filterTasksByTags = (tasks: TaskType[], tags: string[]): TaskType[] => {
-        if (tags.length === 0) return tasks;
+    const filterTasksByTags = (tasks: TaskType[], selectedTagIds: string[]): TaskType[] => {
+        if (selectedTagIds.length === 0) return tasks;
 
         return tasks.filter(task => {
-            return tags.every(tag => task.tags.includes(tag));
+            return selectedTagIds.every(tagId => task.tags.includes(tagId));
         });
     };
 
@@ -97,7 +106,7 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return filterTasksByTags(filteredByDate, tags);
     };
 
-    const createTask = (task: TaskType, parentId?: string) => {
+    const createTask = (task: TaskType, parentId?: string | null) => {
         if (parentId) {
             const selectedTask = tasks.find(task => task.id === parentId);
             if (selectedTask) {
@@ -110,6 +119,20 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     };
 
+    const addTag = (tag: TagType) => {
+        addTagStorage(tag);
+        setTags(prevTags => [...prevTags, tag]);
+    };
+
+    const updateTag = (updatedTag: TagType) => {
+        updateTagStorage(updatedTag);
+        setTags(prevTags => prevTags.map(tag => (tag.id === updatedTag.id ? updatedTag : tag)));
+    };
+
+    const deleteTag = (tagId: string) => {
+        deleteTagStorage(tagId);
+        setTags(prevTags => prevTags.filter(tag => tag.id !== tagId));
+    };
 
     return (
         <TaskContext.Provider value={{
@@ -117,13 +140,16 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
             filteredTasks,
             selectedDate,
             selectedTags,
+            tags,
             addTask,
             updateTask,
             deleteTask,
             setSelectedDate,
             setSelectedTags,
-            // @ts-ignore
-            createTask
+            createTask,
+            addTag,
+            updateTag,
+            deleteTag
         }}>
             {children}
         </TaskContext.Provider>

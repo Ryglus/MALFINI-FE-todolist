@@ -12,7 +12,7 @@ import {
 } from '@mantine/core';
 import { TaskType } from '../../types/TaskType.ts';
 import { IconEdit, IconTrash, IconChevronDown, IconChevronUp, IconSquareCheck } from '@tabler/icons-react';
-import { useTasks } from '../../context/TaskContext'; // Import the context
+import { useTasks } from '../../context/TaskContext';
 import { format } from 'date-fns';
 
 interface TaskProps {
@@ -24,15 +24,15 @@ function Task({ task, onEdit }: TaskProps) {
     const [collapsed, setCollapsed] = useState(true);
     const [checked, setChecked] = useState(task.completed);
     const theme = useMantineTheme();
-    const { updateTask, deleteTask } = useTasks();
+    const { updateTask, deleteTask, tags } = useTasks();
 
     const totalSubTasks = task.subTasks?.length || 0;
     const completedSubTasks = task.subTasks?.filter(subTask => subTask.completed).length || 0;
     const completionPercentage = totalSubTasks ? (completedSubTasks / totalSubTasks) * 100 : 0;
 
-    const getTagColor = (tag: string) => {
-        const colors = ['#FF7A00', '#6A5ACD', '#FF4500', '#4CAF50', '#FFC107', '#FAC1da'];
-        return colors[tag.length % colors.length];
+    const getTagColor = (tagId: string) => {
+        const tag = tags.find(tag => tag.id === tagId);
+        return tag ? tag.color : '#cccccc';
     };
 
     const formattedDate = task.date ? format(new Date(task.date), 'MMM dd, yyyy') : 'No date';
@@ -90,11 +90,11 @@ function Task({ task, onEdit }: TaskProps) {
                         padding: '0',
                     }}
                 >
-                    {task.tags.map((tag, index) => (
-                        <Tooltip.Floating key={index} label={tag}>
+                    {task.tags.map((tagId, index) => (
+                        <Tooltip.Floating key={index} label={tags.find(tag => tag.id === tagId)?.name || 'Unknown'}>
                             <div
                                 style={{
-                                    backgroundColor: getTagColor(tag),
+                                    backgroundColor: getTagColor(tagId),
                                     width: '100%',
                                     height: `${100 / task.tags.length}%`,
                                     minHeight: '10px',
@@ -130,7 +130,7 @@ function Task({ task, onEdit }: TaskProps) {
                 <div style={{ paddingLeft: '30px' }}>
                     <Title order={3}>{task.name}</Title>
                     <Text size="sm" style={{ marginTop: '4px' }}>{task.description}</Text>
-                    <Text size="xs" color="dimmed" style={{ marginTop: '10px' }}>
+                    <Text size="xs" c="dimmed" style={{ marginTop: '10px' }}>
                         {formattedDate}
                     </Text>
                 </div>

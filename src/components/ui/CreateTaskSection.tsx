@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { TaskType } from '../../types/TaskType.ts';
 import DatePickerDropdown from "../comprised/DatePickerDropdown.tsx";
 import { useTasks } from '../../context/TaskContext';
-import { loadTags } from '../../utils/tagStorage';
+
 
 const CreateTaskSection = () => {
     const [taskName, setTaskName] = useState('');
@@ -15,12 +15,11 @@ const CreateTaskSection = () => {
     const [existingTaskId, setExistingTaskId] = useState<string | null>(null);
     const [tagOptions, setTagOptions] = useState<{ value: string; label: string }[]>([]);
 
-    const { createTask, tasks } = useTasks();
+    const { createTask, tasks, tags: allTags } = useTasks();
 
     useEffect(() => {
-        const tags = loadTags();
-        setTagOptions(tags.map(tag => ({ value: tag.id, label: tag.name })));
-    }, []);
+        setTagOptions(allTags.map(tag => ({ value: tag.id, label: tag.name })));
+    }, [allTags]);
 
     const handleCreateTask = () => {
         if (!taskName || !date) {
@@ -95,27 +94,27 @@ const CreateTaskSection = () => {
 
                 <Grid.Col span={12}>
                     <Collapse in={expanded}>
-                        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                        <div style={{display: 'flex', gap: '10px', alignItems: 'center'}}>
                             {!date ? (
-                                <span style={{ paddingTop: '25px' }}>
-                                    <DatePickerDropdown selectedDate={date} onDateChange={setDate} />
+                                <span style={{paddingTop: '25px'}}>
+                                    <DatePickerDropdown selectedDate={date} onDateChange={setDate}/>
                                 </span>
                             ) : (
-                                <DatePickerDropdown selectedDate={date} onDateChange={setDate} />
+                                <DatePickerDropdown selectedDate={date} onDateChange={setDate}/>
                             )}
                             <TextInput
                                 placeholder="Description"
                                 value={description}
                                 onChange={(event) => setDescription(event.currentTarget.value)}
                                 label="Description"
-                                style={{ width: '100%' }}
+                                style={{width: '100%'}}
                             />
                         </div>
 
                         <Button
                             onClick={handleCreateTask}
                             color="blue"
-                            style={{ width: '100%', marginTop: '16px' }}
+                            style={{width: '100%', marginTop: '16px'}}
                         >
                             Create Task
                         </Button>
