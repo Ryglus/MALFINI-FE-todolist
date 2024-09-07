@@ -1,20 +1,16 @@
-import React, {  useState } from 'react';
-import {Link,  useNavigate} from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { Divider, Text, Group, Avatar, Stack, Button, useMantineTheme } from '@mantine/core';
 import DatePicker from "../comprised/DatePicker";
 import TaskChart from "../comprised/TaskChart";
-import {toLocalISODateString} from "../../utils/TimeBeTiming.ts";
+import { useTasks } from '../../context/TaskContext';
 
 const AccountSection: React.FC = () => {
-    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+    const { selectedDate, setSelectedDate } = useTasks();
     const theme = useMantineTheme();
-    const navigate = useNavigate();
 
     const handleDateChange = (date: Date | null) => {
         setSelectedDate(date);
-
-        const localISODate = toLocalISODateString(date);
-        navigate(localISODate ? `/?date=${localISODate}` : `/`);
     };
 
     return (

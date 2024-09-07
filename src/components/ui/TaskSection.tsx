@@ -1,43 +1,26 @@
-import { Text } from '@mantine/core';
-import { TaskType } from '../../types/TaskType.ts';
-import Task from '../comprised/Task.tsx';
-import {updateTask, loadTasks, deleteTask} from '../../utils/taskStorage'; // Adjust the import path as needed
+import React  from 'react';
+import {useTasks} from '../../context/TaskContext';
+import Task from '../comprised/Task';
 
-interface TaskSectionProps {
-    tasks: TaskType[];
-    setTasks: React.Dispatch<React.SetStateAction<TaskType[]>>;
-}
-
-const TaskSection = ({ tasks, setTasks }: TaskSectionProps) => {
-    const handleEditTask = (editedTask: TaskType) => {
-        updateTask(editedTask);
-        setTasks(prevTasks => prevTasks.map(task => (task.id === editedTask.id ? editedTask : task)));
-    };
-    const handleChangeTask = () => {
-        setTasks(loadTasks);
-    };
-    const handleDeleteTask = (id: string) => {
-        deleteTask(id);
-        setTasks(loadTasks());
-    };
+const TaskList: React.FC = () => {
+    const { filteredTasks } = useTasks();
 
     return (
-        <>
-            {tasks.length > 0 ? (
-                tasks.map(task => (
+        <div>
+            {filteredTasks.length > 0 ? (
+                filteredTasks.map(task => (
                     <Task
                         key={task.id}
                         task={task}
-                        onEdit={handleEditTask}
-                        onDelete={handleDeleteTask}
-                        onChange={handleChangeTask}
+                        onEdit={() => {}}
                     />
                 ))
             ) : (
-                <Text>No tasks available</Text>
+                <p>No tasks available</p>
             )}
-        </>
+        </div>
     );
+
 };
 
-export default TaskSection;
+export default TaskList;

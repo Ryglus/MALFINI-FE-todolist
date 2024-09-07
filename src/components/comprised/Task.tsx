@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
     Card,
     Text,
@@ -11,21 +12,19 @@ import {
 } from '@mantine/core';
 import { TaskType } from '../../types/TaskType.ts';
 import { IconEdit, IconTrash, IconChevronDown, IconChevronUp, IconSquareCheck } from '@tabler/icons-react';
-import { useState } from 'react';
-import { updateTask } from '../../utils/taskStorage';
+import { useTasks } from '../../context/TaskContext'; // Import the context
 import { format } from 'date-fns';
 
 interface TaskProps {
     task: TaskType;
     onEdit: (task: TaskType) => void;
-    onDelete: (id: string) => void;
-    onChange: () => void;
 }
 
-function Task({ task, onEdit, onDelete, onChange }: TaskProps) {
+function Task({ task, onEdit }: TaskProps) {
     const [collapsed, setCollapsed] = useState(true);
     const [checked, setChecked] = useState(task.completed);
     const theme = useMantineTheme();
+    const { updateTask, deleteTask } = useTasks();
 
     const totalSubTasks = task.subTasks?.length || 0;
     const completedSubTasks = task.subTasks?.filter(subTask => subTask.completed).length || 0;
@@ -42,7 +41,10 @@ function Task({ task, onEdit, onDelete, onChange }: TaskProps) {
         const updatedTask = { ...task, completed: !checked };
         setChecked(prev => !prev);
         updateTask(updatedTask);
-        onChange();
+    };
+
+    const handleDelete = () => {
+        deleteTask(task.id);
     };
 
     return (
@@ -54,8 +56,8 @@ function Task({ task, onEdit, onDelete, onChange }: TaskProps) {
                     position: 'relative',
                     padding: '14px',
                     backgroundColor: `linear-gradient(to right, ${theme.colors.green[2]} ${completionPercentage}%, ${theme.colors.gray[0]} ${completionPercentage}%)`,
-                    opacity: checked ? 0.6 : 1, // Dim the card if completed
-                    textDecoration: checked ? 'line-through' : 'none', // Strike-through if completed
+                    opacity: checked ? 0.6 : 1,
+                    textDecoration: checked ? 'line-through' : 'none',
                 }}
             >
                 {task.subTasks && task.subTasks.length > 0 && (
@@ -158,7 +160,7 @@ function Task({ task, onEdit, onDelete, onChange }: TaskProps) {
                             flex: 1,
                             borderRadius: 0,
                         }}
-                        onClick={() => onDelete(task.id)}
+                        onClick={handleDelete}
                     >
                         <IconTrash size={16} />
                     </ActionIcon>
@@ -177,8 +179,6 @@ function Task({ task, onEdit, onDelete, onChange }: TaskProps) {
                     )}
 
                 </div>
-
-
             </Card>
             {task.subTasks && task.subTasks.length > 0 && (
                 <Collapse in={!collapsed}>
@@ -201,8 +201,6 @@ function Task({ task, onEdit, onDelete, onChange }: TaskProps) {
                                 <Task
                                     task={subTask}
                                     onEdit={onEdit}
-                                    onChange={onChange}
-                                    onDelete={onDelete}
                                 />
                             </div>
                         ))}

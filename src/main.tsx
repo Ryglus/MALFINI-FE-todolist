@@ -6,6 +6,7 @@ import App from './App.tsx'
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import './index.css'
+import {TaskProvider} from "./context/TaskContext.tsx";
 
 const theme = createTheme({
     fontFamily: 'Open Sans, sans-serif',
@@ -27,7 +28,9 @@ const theme = createTheme({
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
       <MantineProvider defaultColorScheme="auto" theme={theme}>
-          <App />
+          <TaskProvider>
+            <App />
+          </TaskProvider>
       </MantineProvider>
   </StrictMode>,
 )

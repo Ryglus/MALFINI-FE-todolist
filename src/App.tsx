@@ -9,25 +9,24 @@ function App() {
 
 
     return (
+            <Router>
+                    <Routes>
+                        <Route path="/" element={<HomeLayout title="Home"/>}>
+                            <Route index element={<HomePage/>}/>
 
-                <Router>
-                        <Routes>
-                            <Route path="/" element={<HomeLayout title="Home"/>}>
-                                <Route index element={<HomePage/>}/>
+                        </Route>
+                        <Route path="/tasks" element={<HomeLayout title="Tasks"/>}>
+                            <Route index element={<HomePage/>}/>
 
-                            </Route>
-                            <Route path="/tasks" element={<HomeLayout title="Scheduled Tasks"/>}>
-                                <Route index element={<HomePage/>}/>
+                        </Route>
+                        <Route path="/settings" element={<HomeLayout title="Settings"/>}>
+                            <Route index element={<SettingsPage />}/>
 
-                            </Route>
-                            <Route path="/settings" element={<HomeLayout title="Settings"/>}>
-                                <Route index element={<SettingsPage />}/>
+                        </Route>
 
-                            </Route>
-
-                            <Route path="*" element={<NoPage />} />
-                        </Routes>
-                </Router>
+                        <Route path="*" element={<NoPage />} />
+                    </Routes>
+            </Router>
     );
 }
 
