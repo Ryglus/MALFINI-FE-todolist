@@ -1,50 +1,42 @@
-# React + TypeScript + Vite
+# Todo List App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![App Banner](inspiration/doc/baner.png)
 
-Currently, two official plugins are available:
+A simple and elegant Todo List application built with React and Mantine. This app allows you to manage your tasks efficiently, track progress, and customize your experience with tags and subtasks.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
+## Responsive Design
 
-## Expanding the ESLint configuration
+For all view sizes
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+![Pc Design](inspiration/doc/pcview.png)
 
-- Configure the top-level `parserOptions` property like this:
+## Features
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- **Create, Edit, and Delete Tasks**: Manage your tasks with ease.
+- **Subtasks**: Organize your tasks with nested subtasks.
+- **Tag Management**: Use tags to categorize and filter tasks.
+- **Date & tag Filtering**: View tasks based on selected dates and tags.
+- **Progress Tracking**: Visualize task completion with charts.
+- **Responsive Design**: Works seamlessly on various screen sizes.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+---
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## Screenshots
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+### Task Creation
+
+![Task Creation](inspiration/doc/newtask.png)
+
+### Full Tag Controlls
+
+![Task Dashboard](inspiration/doc/tagcontroll.png)
+
+---
+
+## Technologies Used
+
+- **React**: JavaScript library for building user interfaces.
+- **Mantine**: React components library for UI development.
+- **Luxon**: Library for date and time manipulation.
+- **Context API**: State management for tasks and tags.
