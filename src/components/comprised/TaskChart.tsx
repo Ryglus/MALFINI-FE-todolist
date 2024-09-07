@@ -2,10 +2,12 @@ import React from 'react';
 import { Text, useMantineTheme, RingProgress, Group, Paper, Tooltip } from '@mantine/core';
 import { useTasks } from '../../context/TaskContext';
 import { toLocalISODateString } from '../../utils/TimeBeTiming.ts';
+import {useNavigateToMainIfNotOnMain} from "../../utils/navUtil.ts";
 
 const TaskChart: React.FC = () => {
     const theme = useMantineTheme();
     const { tasks, setSelectedDate } = useTasks();
+    const navigateToMainIfNotOnMain = useNavigateToMainIfNotOnMain();
 
     const today = toLocalISODateString(new Date());
 
@@ -16,6 +18,7 @@ const TaskChart: React.FC = () => {
 
     const handleClick = () => {
         setSelectedDate(new Date());
+        navigateToMainIfNotOnMain();
     };
 
     return (

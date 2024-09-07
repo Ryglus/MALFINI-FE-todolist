@@ -4,13 +4,16 @@ import { Divider, Text, Group, Avatar, Stack, Button, useMantineTheme } from '@m
 import DatePicker from "../comprised/DatePicker";
 import TaskChart from "../comprised/TaskChart";
 import { useTasks } from '../../context/TaskContext';
+import {useNavigateToMainIfNotOnMain} from "../../utils/navUtil.ts";
 
 const AccountSection: React.FC = () => {
     const { selectedDate, setSelectedDate } = useTasks();
     const theme = useMantineTheme();
+    const navigateToMainIfNotOnMain = useNavigateToMainIfNotOnMain();
 
     const handleDateChange = (date: Date | null) => {
         setSelectedDate(date);
+        navigateToMainIfNotOnMain();
     };
 
     return (
