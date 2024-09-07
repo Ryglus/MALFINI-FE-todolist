@@ -6,10 +6,12 @@ interface TaskContextType {
     tasks: TaskType[];
     filteredTasks: TaskType[];
     selectedDate: Date | null;
+    selectedTags: string[];
     addTask: (task: TaskType) => void;
     updateTask: (task: TaskType) => void;
     deleteTask: (taskId: string) => void;
     setSelectedDate: (date: Date | null) => void;
+    setSelectedTags: (tags: string[]) => void;
     createTask: (task: TaskType, parentId?: string | null) => void;
 }
 
@@ -19,6 +21,7 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [tasks, setTasks] = useState<TaskType[]>([]);
     const [filteredTasks, setFilteredTasks] = useState<TaskType[]>([]);
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
     useEffect(() => {
         const storedTasks = loadTasks();
@@ -26,8 +29,8 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, []);
 
     useEffect(() => {
-        setFilteredTasks(filterTasksByDate(tasks, selectedDate));
-    }, [tasks, selectedDate]);
+        setFilteredTasks(filterTasks(tasks, selectedDate, selectedTags));
+    }, [tasks, selectedDate, selectedTags]);
 
     const addTask = (task: TaskType) => {
         addTaskStorage(task);
@@ -81,6 +84,19 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
     };
 
+    const filterTasksByTags = (tasks: TaskType[], tags: string[]): TaskType[] => {
+        if (tags.length === 0) return tasks;
+
+        return tasks.filter(task => {
+            return tags.every(tag => task.tags.includes(tag));
+        });
+    };
+
+    const filterTasks = (tasks: TaskType[], date: Date | null, tags: string[]): TaskType[] => {
+        const filteredByDate = filterTasksByDate(tasks, date);
+        return filterTasksByTags(filteredByDate, tags);
+    };
+
     const createTask = (task: TaskType, parentId?: string) => {
         if (parentId) {
             const selectedTask = tasks.find(task => task.id === parentId);
@@ -94,8 +110,24 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     };
 
-    // @ts-ignore
-    return (<TaskContext.Provider value={{ tasks, filteredTasks, selectedDate, addTask, updateTask, deleteTask, setSelectedDate, createTask }}>{children}</TaskContext.Provider>);
+
+    return (
+        <TaskContext.Provider value={{
+            tasks,
+            filteredTasks,
+            selectedDate,
+            selectedTags,
+            addTask,
+            updateTask,
+            deleteTask,
+            setSelectedDate,
+            setSelectedTags,
+            // @ts-ignore
+            createTask
+        }}>
+            {children}
+        </TaskContext.Provider>
+    );
 };
 
 export const useTasks = () => {

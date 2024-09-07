@@ -5,10 +5,11 @@ import DatePicker from "../comprised/DatePicker";
 import TaskChart from "../comprised/TaskChart";
 import { useTasks } from '../../context/TaskContext';
 import {useNavigateToMainIfNotOnMain} from "../../utils/navUtil.ts";
+import TagSection from "./TagSection.tsx";
 
 const AccountSection: React.FC = () => {
     const { selectedDate, setSelectedDate } = useTasks();
-    const theme = useMantineTheme();
+    useMantineTheme();
     const navigateToMainIfNotOnMain = useNavigateToMainIfNotOnMain();
 
     const handleDateChange = (date: Date | null) => {
@@ -52,15 +53,7 @@ const AccountSection: React.FC = () => {
                     <Stack>
                         <Text>tags</Text>
                         <Stack>
-                            <Text size="sm" c={theme.colors.orange[6]}>
-                                &bull; Personal
-                            </Text>
-                            <Text size="sm" c={theme.colors.blue[6]}>
-                                &bull; Freelance
-                            </Text>
-                            <Text size="sm" c={theme.colors.red[6]}>
-                                &bull; Work
-                            </Text>
+                            <TagSection />
                         </Stack>
                     </Stack>
 

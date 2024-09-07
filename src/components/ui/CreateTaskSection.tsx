@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TextInput, MultiSelect, Button, Collapse, Select, Grid, Group } from '@mantine/core';
 import { v4 as uuidv4 } from 'uuid';
 import { TaskType } from '../../types/TaskType.ts';
 import DatePickerDropdown from "../comprised/DatePickerDropdown.tsx";
 import { useTasks } from '../../context/TaskContext';
+import { loadTags } from '../../utils/tagStorage';
 
 const CreateTaskSection = () => {
     const [taskName, setTaskName] = useState('');
@@ -12,8 +13,14 @@ const CreateTaskSection = () => {
     const [description, setDescription] = useState('');
     const [expanded, setExpanded] = useState(false);
     const [existingTaskId, setExistingTaskId] = useState<string | null>(null);
+    const [tagOptions, setTagOptions] = useState<{ value: string; label: string }[]>([]);
 
     const { createTask, tasks } = useTasks();
+
+    useEffect(() => {
+        const tags = loadTags();
+        setTagOptions(tags.map(tag => ({ value: tag.id, label: tag.name })));
+    }, []);
 
     const handleCreateTask = () => {
         if (!taskName || !date) {
@@ -64,7 +71,7 @@ const CreateTaskSection = () => {
                         <Collapse in={expanded}>
                             <MultiSelect
                                 placeholder="Tags"
-                                data={['urgent', 'shopping', 'work', 'personal']}
+                                data={tagOptions}
                                 value={tags}
                                 onChange={setTags}
                                 label="Tags"
