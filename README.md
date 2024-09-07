@@ -33,6 +33,35 @@ For all view sizes
 ![Task Dashboard](inspiration/doc/tagcontroll.png)
 
 ---
+## Installation
+
+1. **Clone the repository**
+
+    ```bash
+    git clone https://github.com/Ryglus/MALFINI-FE-todolist
+    ```
+
+2. **Navigate to the project directory**
+
+    ```bash
+    cd MALFINI-FE-todolist
+    ```
+
+3. **Install dependencies**
+
+    ```bash
+    npm install
+    ```
+
+4. **Run the application**
+
+    ```bash
+    npm start
+    ```
+
+   The application will be available at [http://localhost:5173](http://localhost:5173) (most likely).
+
+---
 
 ## Technologies Used
 
